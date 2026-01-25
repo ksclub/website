@@ -88,29 +88,30 @@ export default function Header() {
             <nav className="flex flex-col gap-2">
               <div className="py-2">
                 <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">Community</p>
-                <Link href="/community/our-brand" className="block py-2 text-gray-600 hover:text-gray-900 pl-4">
+                <Link href="/community/our-brand" className="block py-2 text-gray-600 hover:text-gray-900 pl-4" onClick={() => setIsMobileMenuOpen(false)}>
                   Our Brand
                 </Link>
-                <Link href="/community/life-style" className="block py-2 text-gray-600 hover:text-gray-900 pl-4">
+                <Link href="/community/life-style" className="block py-2 text-gray-600 hover:text-gray-900 pl-4" onClick={() => setIsMobileMenuOpen(false)}>
                   Life Style
                 </Link>
-                <Link href="/community/travel" className="block py-2 text-gray-600 hover:text-gray-900 pl-4">
+                <Link href="/community/travel" className="block py-2 text-gray-600 hover:text-gray-900 pl-4" onClick={() => setIsMobileMenuOpen(false)}>
                   Travel
                 </Link>
-                <Link href="/community/drama-movie" className="block py-2 text-gray-600 hover:text-gray-900 pl-4">
+                <Link href="/community/drama-movie" className="block py-2 text-gray-600 hover:text-gray-900 pl-4" onClick={() => setIsMobileMenuOpen(false)}>
                   Drama / Movie
                 </Link>
               </div>
-              <Link href="/korean-class" className="py-2 text-gray-600 hover:text-gray-900">
+              <Link href="/korean-class" className="py-2 text-gray-600 hover:text-gray-900" onClick={() => setIsMobileMenuOpen(false)}>
                 Korean Language Class
               </Link>
-              <Link href="/notice" className="py-2 text-gray-600 hover:text-gray-900">
+              <Link href="/notice" className="py-2 text-gray-600 hover:text-gray-900" onClick={() => setIsMobileMenuOpen(false)}>
                 Notice
               </Link>
               <Link
                 href="/contact"
                 className="mt-2 px-5 py-2 rounded-full transition-colors text-center"
                 style={{ backgroundColor: '#111827', color: '#ffffff' }}
+                onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact Us
               </Link>

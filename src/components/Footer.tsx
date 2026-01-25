@@ -67,30 +67,6 @@ export default function Footer() {
                   View Courses
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/korean-class#beginner"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  Beginner
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/korean-class#intermediate"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  Intermediate
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/korean-class#advanced"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
-                >
-                  Advanced
-                </Link>
-              </li>
             </ul>
           </div>
 

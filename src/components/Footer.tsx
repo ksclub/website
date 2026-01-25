@@ -7,9 +7,12 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-20">
           {/* Brand */}
           <div className="md:col-span-1">
-            <h3 className="text-xl font-bold text-gray-900 mb-5">
-              Korean Slang Club
-            </h3>
+            <div className="flex items-center gap-2 mb-5">
+              <img src="/website/logo2.png" alt="Korean Slang Club" width={40} height={40} />
+              <h3 className="text-xl font-bold text-gray-900">
+                Korean Slang Club
+              </h3>
+            </div>
             <p className="text-gray-500 leading-relaxed">
               Discover Korean culture, language, and lifestyle through our
               community.

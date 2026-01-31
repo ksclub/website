@@ -1,19 +1,28 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-50 border-t border-gray-100 pt-8">
+    <footer
+      style={{ backgroundColor: "#FAF9F6", borderTop: "1px solid #e7e5e4" }}
+      className="pt-8"
+    >
       <div className="container mx-auto px-6 py-20 md:py-24">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-20">
           {/* Brand */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-2 mb-5">
-              <img src="/website/logo2.png" alt="Korean Slang Club" width={40} height={40} />
-              <h3 className="text-xl font-bold text-gray-900">
+              <Image
+                src="/logo2.png"
+                alt="Korean Slang Club"
+                width={40}
+                height={40}
+              />
+              <h3 className="text-xl font-bold" style={{ color: "#2D2926" }}>
                 Korean Slang Club
               </h3>
             </div>
-            <p className="text-gray-500 leading-relaxed">
+            <p className="leading-relaxed" style={{ color: "#78716c" }}>
               Discover Korean culture, language, and lifestyle through our
               community.
             </p>
@@ -21,12 +30,15 @@ export default function Footer() {
 
           {/* Community */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-6">Community</h4>
+            <h4 className="font-semibold mb-6" style={{ color: "#2D2926" }}>
+              Community
+            </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/community/our-brand"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Our Brand
                 </Link>
@@ -34,7 +46,8 @@ export default function Footer() {
               <li>
                 <Link
                   href="/community/life-style"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Life Style
                 </Link>
@@ -42,7 +55,8 @@ export default function Footer() {
               <li>
                 <Link
                   href="/community/travel"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Travel
                 </Link>
@@ -50,7 +64,8 @@ export default function Footer() {
               <li>
                 <Link
                   href="/community/drama-movie"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Drama / Movie
                 </Link>
@@ -60,12 +75,15 @@ export default function Footer() {
 
           {/* Classes */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-6">Korean Language Class</h4>
+            <h4 className="font-semibold mb-6" style={{ color: "#2D2926" }}>
+              Korean Language Class
+            </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/korean-class"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   View Courses
                 </Link>
@@ -75,12 +93,15 @@ export default function Footer() {
 
           {/* Support */}
           <div>
-            <h4 className="font-semibold text-gray-900 mb-6">Support</h4>
+            <h4 className="font-semibold mb-6" style={{ color: "#2D2926" }}>
+              Support
+            </h4>
             <ul className="space-y-4">
               <li>
                 <Link
                   href="/notice"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Notice
                 </Link>
@@ -88,7 +109,8 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact"
-                  className="text-gray-500 hover:text-gray-900 transition-colors"
+                  className="transition-colors hover:text-[#C8102E]"
+                  style={{ color: "#78716c" }}
                 >
                   Contact Us
                 </Link>
@@ -97,8 +119,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 mt-16 pt-10 text-center text-gray-400">
-          <p>
+        <div
+          className="mt-16 pt-10 text-center pb-4"
+          style={{ borderTop: "1px solid #e7e5e4" }}
+        >
+          <p style={{ color: "#a8a29e" }}>
             &copy; {new Date().getFullYear()} Korean Slang Club. All rights
             reserved.
           </p>

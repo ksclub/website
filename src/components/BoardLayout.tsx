@@ -54,15 +54,19 @@ export default function BoardLayout({ title, description, category }: BoardLayou
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
       {/* Header */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
+      <section className="korean-gradient korean-pattern-bg py-12 md:py-16">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl">
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
+                  style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
+              Community
+            </span>
+            <h1 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: '#2D2926' }}>
               {title}
             </h1>
-            <p className="text-gray-600">{description}</p>
+            <p style={{ color: '#57534e' }}>{description}</p>
           </div>
         </div>
       </section>
@@ -73,13 +77,13 @@ export default function BoardLayout({ title, description, category }: BoardLayou
           {/* Actions Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">
+              <span className="text-sm" style={{ color: '#78716c' }}>
                 Total {pagination?.total || 0} posts
               </span>
             </div>
             <button
-              className="px-6 py-2.5 rounded-lg transition-colors text-sm font-medium"
-              style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+              className="px-6 py-2.5 rounded-lg transition-all text-sm font-medium hover:scale-105"
+              style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
               onClick={handleWriteClick}
             >
               Write Post
@@ -89,18 +93,20 @@ export default function BoardLayout({ title, description, category }: BoardLayou
           {/* Loading State */}
           {isLoading && (
             <div className="text-center py-16">
-              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
-              <p className="mt-4 text-gray-500">Loading posts...</p>
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-t-[#C8102E]"
+                   style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+              <p className="mt-4" style={{ color: '#78716c' }}>Loading posts...</p>
             </div>
           )}
 
           {/* Error State */}
           {error && !isLoading && (
             <div className="text-center py-16">
-              <p className="text-red-500">{error}</p>
+              <p style={{ color: '#C8102E' }}>{error}</p>
               <button
                 onClick={() => setCurrentPage(1)}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
+                className="mt-4 px-4 py-2 rounded-lg text-white"
+                style={{ backgroundColor: '#C8102E' }}
               >
                 Try Again
               </button>
@@ -119,13 +125,14 @@ export default function BoardLayout({ title, description, category }: BoardLayou
           {/* Empty State */}
           {!isLoading && !error && posts.length === 0 && (
             <div className="text-center py-16">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4"
+                   style={{ backgroundColor: '#C8102E15' }}>
+                <svg className="w-8 h-8" style={{ color: '#C8102E' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No posts yet</h3>
-              <p className="text-gray-500 text-sm">Be the first to share something!</p>
+              <h3 className="text-lg font-medium mb-2" style={{ color: '#2D2926' }}>No posts yet</h3>
+              <p className="text-sm" style={{ color: '#78716c' }}>Be the first to share something!</p>
             </div>
           )}
 
@@ -134,7 +141,8 @@ export default function BoardLayout({ title, description, category }: BoardLayou
             <div className="flex justify-center mt-12">
               <nav className="flex items-center gap-1">
                 <button
-                  className="px-3 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                  className="px-3 py-2 disabled:opacity-50 transition-colors"
+                  style={{ color: '#a8a29e' }}
                   disabled={currentPage === 1}
                   onClick={() => handlePageChange(currentPage - 1)}
                 >
@@ -145,11 +153,11 @@ export default function BoardLayout({ title, description, category }: BoardLayou
                 {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
                   <button
                     key={page}
-                    className="px-4 py-2 rounded-lg text-sm"
+                    className="px-4 py-2 rounded-lg text-sm transition-colors"
                     style={
                       currentPage === page
-                        ? { backgroundColor: '#111827', color: '#ffffff' }
-                        : { color: '#4b5563' }
+                        ? { backgroundColor: '#C8102E', color: '#ffffff' }
+                        : { color: '#57534e' }
                     }
                     onClick={() => handlePageChange(page)}
                   >
@@ -157,7 +165,8 @@ export default function BoardLayout({ title, description, category }: BoardLayou
                   </button>
                 ))}
                 <button
-                  className="px-3 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                  className="px-3 py-2 disabled:opacity-50 transition-colors"
+                  style={{ color: '#57534e' }}
                   disabled={currentPage === pagination.totalPages}
                   onClick={() => handlePageChange(currentPage + 1)}
                 >
@@ -172,45 +181,45 @@ export default function BoardLayout({ title, description, category }: BoardLayou
       </section>
 
       {/* Category Navigation */}
-      <section className="py-8 border-t border-gray-100">
+      <section className="py-8 border-t" style={{ borderColor: '#e7e5e4' }}>
         <div className="container mx-auto px-6">
           <div className="flex flex-wrap justify-center gap-3">
             <Link
               href="/community/our-brand"
-              className="px-5 py-2 rounded-full text-sm transition-colors"
+              className="px-5 py-2 rounded-full text-sm transition-all hover:scale-105"
               style={category === "our-brand"
-                ? { backgroundColor: '#111827', color: '#ffffff' }
-                : { backgroundColor: '#f3f4f6', color: '#4b5563' }
+                ? { backgroundColor: '#C8102E', color: '#ffffff' }
+                : { backgroundColor: '#f5f5f4', color: '#57534e' }
               }
             >
               Our Brand
             </Link>
             <Link
               href="/community/life-style"
-              className="px-5 py-2 rounded-full text-sm transition-colors"
+              className="px-5 py-2 rounded-full text-sm transition-all hover:scale-105"
               style={category === "life-style"
-                ? { backgroundColor: '#111827', color: '#ffffff' }
-                : { backgroundColor: '#f3f4f6', color: '#4b5563' }
+                ? { backgroundColor: '#C8102E', color: '#ffffff' }
+                : { backgroundColor: '#f5f5f4', color: '#57534e' }
               }
             >
               Life Style
             </Link>
             <Link
               href="/community/travel"
-              className="px-5 py-2 rounded-full text-sm transition-colors"
+              className="px-5 py-2 rounded-full text-sm transition-all hover:scale-105"
               style={category === "travel"
-                ? { backgroundColor: '#111827', color: '#ffffff' }
-                : { backgroundColor: '#f3f4f6', color: '#4b5563' }
+                ? { backgroundColor: '#C8102E', color: '#ffffff' }
+                : { backgroundColor: '#f5f5f4', color: '#57534e' }
               }
             >
               Travel
             </Link>
             <Link
               href="/community/drama-movie"
-              className="px-5 py-2 rounded-full text-sm transition-colors"
+              className="px-5 py-2 rounded-full text-sm transition-all hover:scale-105"
               style={category === "drama-movie"
-                ? { backgroundColor: '#111827', color: '#ffffff' }
-                : { backgroundColor: '#f3f4f6', color: '#4b5563' }
+                ? { backgroundColor: '#C8102E', color: '#ffffff' }
+                : { backgroundColor: '#f5f5f4', color: '#57534e' }
               }
             >
               Drama / Movie

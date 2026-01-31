@@ -4,40 +4,70 @@
   --color-white: #ffffff;
   --color-black: #000000;
 
-  --color-gray-50: #f9fafb;
-  --color-gray-100: #f3f4f6;
-  --color-gray-200: #e5e7eb;
-  --color-gray-300: #d1d5db;
-  --color-gray-400: #9ca3af;
-  --color-gray-500: #6b7280;
-  --color-gray-600: #4b5563;
-  --color-gray-700: #374151;
-  --color-gray-800: #1f2937;
-  --color-gray-900: #111827;
+  /* Korean-inspired warm off-white */
+  --color-cream: #FFFDF7;
+  --color-warm-white: #FAF9F6;
 
-  --color-blue-50: #eff6ff;
-  --color-blue-100: #dbeafe;
-  --color-blue-200: #bfdbfe;
-  --color-blue-300: #93c5fd;
-  --color-blue-400: #60a5fa;
-  --color-blue-500: #3b82f6;
-  --color-blue-600: #2563eb;
-  --color-blue-700: #1d4ed8;
-  --color-blue-800: #1e40af;
-  --color-blue-900: #1e3a8a;
+  --color-gray-50: #fafaf9;
+  --color-gray-100: #f5f5f4;
+  --color-gray-200: #e7e5e4;
+  --color-gray-300: #d6d3d1;
+  --color-gray-400: #a8a29e;
+  --color-gray-500: #78716c;
+  --color-gray-600: #57534e;
+  --color-gray-700: #44403c;
+  --color-gray-800: #292524;
+  --color-gray-900: #1c1917;
 
-  --color-green-100: #dcfce7;
-  --color-green-500: #22c55e;
-  --color-green-600: #16a34a;
+  /* 단청 빨강 - Traditional Korean Red (Dancheong) */
+  --color-korean-red: #C8102E;
+  --color-korean-red-light: #E85A4F;
+  --color-korean-red-dark: #9E0B22;
+  --color-red-50: #FEF2F2;
+  --color-red-100: #FEE2E2;
+  --color-red-600: #C8102E;
 
-  --color-red-100: #fee2e2;
-  --color-red-600: #dc2626;
+  /* 청자색 - Celadon Green */
+  --color-celadon: #7BA05B;
+  --color-celadon-light: #9FBF8B;
+  --color-celadon-dark: #5B8C5A;
+  --color-green-100: #ECFCCB;
+  --color-green-500: #7BA05B;
+  --color-green-600: #5B8C5A;
 
-  --color-purple-100: #f3e8ff;
-  --color-purple-600: #9333ea;
+  /* 청색 - Traditional Korean Blue */
+  --color-korean-blue: #2B4F81;
+  --color-korean-blue-light: #4A6FA5;
+  --color-korean-blue-dark: #1E3A5F;
+  --color-blue-50: #EFF6FF;
+  --color-blue-100: #DBEAFE;
+  --color-blue-200: #BFDBFE;
+  --color-blue-300: #93C5FD;
+  --color-blue-400: #60A5FA;
+  --color-blue-500: #4A6FA5;
+  --color-blue-600: #2B4F81;
+  --color-blue-700: #1E3A5F;
+  --color-blue-800: #1E3A5F;
+  --color-blue-900: #1E3A5F;
 
-  --color-orange-100: #ffedd5;
-  --color-orange-600: #ea580c;
+  /* 황색 - Korean Gold/Yellow */
+  --color-korean-gold: #D4AF37;
+  --color-korean-gold-light: #E8C84A;
+  --color-korean-gold-dark: #C9A227;
+
+  /* 자주색 - Korean Purple */
+  --color-korean-purple: #6B4C7A;
+  --color-purple-100: #F3E8FF;
+  --color-purple-600: #6B4C7A;
+
+  /* 주황 - Korean Orange */
+  --color-korean-orange: #E07C3E;
+  --color-orange-100: #FFEDD5;
+  --color-orange-600: #E07C3E;
+
+  /* 먹색 - Korean Ink Black */
+  --color-ink: #2D2926;
+  --color-ink-light: #44403C;
 
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
@@ -48,8 +78,8 @@
 }
 
 body {
-  background: #ffffff;
-  color: #1a1a1a;
+  background: var(--color-warm-white);
+  color: var(--color-ink);
   font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   line-height: 1.6;
 }
@@ -65,12 +95,82 @@ a {
   padding: 0 1.5rem;
 }
 
-/* Button text fix */
-.btn-dark {
-  background-color: #111827;
+/* Korean-style buttons */
+.btn-primary {
+  background-color: var(--color-korean-red);
   color: #ffffff !important;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-korean-red-dark);
+}
+
+.btn-secondary {
+  background-color: var(--color-korean-blue);
+  color: #ffffff !important;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-korean-blue-dark);
+}
+
+.btn-dark {
+  background-color: var(--color-ink);
+  color: #ffffff !important;
+  transition: all 0.2s ease;
 }
 
 .btn-dark:hover {
-  background-color: #1f2937;
+  background-color: var(--color-ink-light);
+}
+
+/* Subtle Korean pattern background */
+.korean-pattern-bg {
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C8102E' fill-opacity='0.03'%3E%3Cpath d='M30 30c0-11.046-8.954-20-20-20v20h20zM30 30c0 11.046 8.954 20 20 20V30H30z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Korean-inspired gradient */
+.korean-gradient {
+  background: linear-gradient(135deg, #FAF9F6 0%, #FEF2F2 50%, #FAF9F6 100%);
+}
+
+/* Celadon-inspired card hover effect */
+.card-hover {
+  transition: all 0.3s ease;
+  border: 1px solid #e7e5e4;
+}
+
+.card-hover:hover {
+  border-color: var(--color-celadon);
+  box-shadow: 0 10px 40px -10px rgba(123, 160, 91, 0.2);
+}
+
+/* Traditional ink text style */
+.ink-text {
+  color: var(--color-ink);
+  font-weight: 600;
+}
+
+/* Gold accent */
+.gold-accent {
+  color: var(--color-korean-gold);
+}
+
+/* Prose styling for post content */
+.prose {
+  color: var(--color-ink);
+}
+
+.prose h1, .prose h2, .prose h3, .prose h4 {
+  color: var(--color-ink);
+}
+
+.prose a {
+  color: var(--color-korean-blue);
+}
+
+.prose a:hover {
+  color: var(--color-korean-red);
 }

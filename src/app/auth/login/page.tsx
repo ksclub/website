@@ -31,23 +31,28 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 korean-gradient korean-pattern-bg">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl border border-gray-100 p-8">
+        <div className="bg-white rounded-2xl p-8 card-hover">
           <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-gray-900">Welcome Back</h1>
-            <p className="text-gray-500 mt-2">Sign in to your account</p>
+            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
+                  style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
+              환영합니다
+            </span>
+            <h1 className="text-2xl font-bold" style={{ color: '#2D2926' }}>Welcome Back</h1>
+            <p className="mt-2" style={{ color: '#78716c' }}>Sign in to your account</p>
           </div>
 
           {error && (
-            <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+            <div className="mb-4 p-4 rounded-lg text-sm"
+                 style={{ backgroundColor: '#C8102E15', color: '#C8102E', border: '1px solid #C8102E30' }}>
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
                 Email
               </label>
               <input
@@ -56,13 +61,17 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all"
+                style={{
+                  border: '1px solid #e7e5e4',
+                  backgroundColor: '#FAF9F6'
+                }}
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
                 Password
               </label>
               <input
@@ -71,7 +80,11 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all"
+                style={{
+                  border: '1px solid #e7e5e4',
+                  backgroundColor: '#FAF9F6'
+                }}
                 placeholder="••••••••"
               />
             </div>
@@ -79,17 +92,17 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
-              style={{ backgroundColor: "#111827", color: "#ffffff" }}
+              className="w-full py-3 rounded-lg font-medium transition-all disabled:opacity-50 hover:scale-[1.02]"
+              style={{ backgroundColor: "#C8102E", color: "#ffffff" }}
             >
               {isLoading ? "Signing in..." : "Sign In"}
             </button>
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-gray-500">
+            <p style={{ color: '#78716c' }}>
               Don&apos;t have an account?{" "}
-              <Link href="/auth/register" className="text-blue-600 hover:text-blue-700 font-medium">
+              <Link href="/auth/register" className="font-medium transition-colors hover:underline" style={{ color: '#C8102E' }}>
                 Sign up
               </Link>
             </p>

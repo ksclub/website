@@ -99,18 +99,19 @@ export default function PostDetailPage({
 
   if (isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
       </div>
     );
   }
 
   if (error || !post) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Post not found</h1>
-          <Link href={`/community/${category}`} className="text-blue-600 hover:text-blue-700">
+          <h1 className="text-2xl font-bold mb-4" style={{ color: '#2D2926' }}>Post not found</h1>
+          <Link href={`/community/${category}`} className="transition-colors hover:underline" style={{ color: '#C8102E' }}>
             Back to {categoryLabels[category] || category}
           </Link>
         </div>
@@ -119,26 +120,28 @@ export default function PostDetailPage({
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ backgroundColor: '#FAF9F6' }}>
       {/* Delete Confirmation Modal */}
       {showDeleteConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full">
-            <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Post</h3>
-            <p className="text-gray-600 mb-6">
+            <h3 className="text-lg font-bold mb-2" style={{ color: '#2D2926' }}>Delete Post</h3>
+            <p className="mb-6" style={{ color: '#57534e' }}>
               Are you sure you want to delete this post? This action cannot be undone.
             </p>
             <div className="flex gap-3">
               <button
                 onClick={() => setShowDeleteConfirm(false)}
-                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+                className="flex-1 px-4 py-2 border rounded-lg transition-colors"
+                style={{ borderColor: '#e7e5e4', color: '#57534e' }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleDelete}
                 disabled={isDeleting}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+                className="flex-1 px-4 py-2 text-white rounded-lg transition-colors disabled:opacity-50"
+                style={{ backgroundColor: '#C8102E' }}
               >
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>
@@ -148,13 +151,14 @@ export default function PostDetailPage({
       )}
 
       {/* Header */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
+      <section className="korean-gradient korean-pattern-bg py-12 md:py-16">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
             <div className="flex items-center justify-between mb-8">
               <Link
                 href={`/community/${category}`}
-                className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"
+                className="inline-flex items-center gap-2 transition-colors hover:text-[#C8102E]"
+                style={{ color: '#78716c' }}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -167,13 +171,15 @@ export default function PostDetailPage({
                 <div className="flex items-center gap-2">
                   <Link
                     href={`/community/${category}/post/${id}/edit`}
-                    className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                    className="px-4 py-2 text-sm rounded-lg transition-colors hover:bg-white/50"
+                    style={{ color: '#57534e' }}
                   >
                     Edit
                   </Link>
                   <button
                     onClick={() => setShowDeleteConfirm(true)}
-                    className="px-4 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                    className="px-4 py-2 text-sm rounded-lg transition-colors"
+                    style={{ color: '#C8102E' }}
                   >
                     Delete
                   </button>
@@ -181,15 +187,16 @@ export default function PostDetailPage({
               )}
             </div>
 
-            <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 text-sm font-medium rounded-full mb-4">
+            <span className="inline-block px-3 py-1 text-sm font-medium rounded-full mb-4"
+                  style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
               {categoryLabels[category] || category}
             </span>
 
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+            <h1 className="text-2xl md:text-3xl font-bold mb-4" style={{ color: '#2D2926' }}>
               {post.title}
             </h1>
 
-            <div className="flex items-center gap-4 text-sm text-gray-500">
+            <div className="flex items-center gap-4 text-sm" style={{ color: '#78716c' }}>
               <span>{post.author.name}</span>
               <span>{formatDate(post.createdAt)}</span>
               <span className="flex items-center gap-1">
@@ -208,7 +215,7 @@ export default function PostDetailPage({
       <section className="py-8 pb-16">
         <div className="container mx-auto px-6">
           <div className="max-w-3xl mx-auto">
-            <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-10">
+            <div className="bg-white rounded-2xl p-6 md:p-10 card-hover">
               <div
                 className="prose prose-gray max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content }}
@@ -220,11 +227,16 @@ export default function PostDetailPage({
               <button
                 onClick={handleLike}
                 disabled={isLiking}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
                   post.isLiked
-                    ? "bg-red-50 text-red-600"
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                    ? ""
+                    : "hover:scale-105"
                 }`}
+                style={
+                  post.isLiked
+                    ? { backgroundColor: '#C8102E15', color: '#C8102E' }
+                    : { backgroundColor: '#f5f5f4', color: '#57534e' }
+                }
               >
                 <svg
                   className="w-5 h-5"
@@ -242,7 +254,7 @@ export default function PostDetailPage({
                 <span>{post._count.likes}</span>
               </button>
 
-              <div className="flex items-center gap-2 text-gray-500">
+              <div className="flex items-center gap-2" style={{ color: '#78716c' }}>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
                     strokeLinecap="round"
@@ -259,8 +271,8 @@ export default function PostDetailPage({
             <div className="mt-8 flex justify-center">
               <Link
                 href={`/community/${category}`}
-                className="px-6 py-3 rounded-lg transition-colors"
-                style={{ backgroundColor: "#f3f4f6", color: "#374151" }}
+                className="px-6 py-3 rounded-lg transition-all hover:scale-105"
+                style={{ backgroundColor: '#f5f5f4', color: '#57534e' }}
               >
                 Back to List
               </Link>

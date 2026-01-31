@@ -13,8 +13,8 @@ const RichTextEditor = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="border border-gray-200 rounded-lg p-4">
-        <div className="animate-pulse h-[300px] bg-gray-100 rounded"></div>
+      <div className="border rounded-lg p-4" style={{ borderColor: '#e7e5e4' }}>
+        <div className="animate-pulse h-[300px] rounded" style={{ backgroundColor: '#f5f5f4' }}></div>
       </div>
     ),
   }
@@ -156,22 +156,24 @@ export default function EditPostPage({
 
   if (authLoading || isLoadingPost) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
       </div>
     );
   }
 
   if (error === "Post not found" || !post) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">
+          <h1 className="text-2xl font-bold mb-4" style={{ color: '#2D2926' }}>
             Post not found
           </h1>
           <Link
             href={`/community/${category}`}
-            className="text-blue-600 hover:text-blue-700"
+            className="transition-colors hover:underline"
+            style={{ color: '#C8102E' }}
           >
             Back to {categoryLabels[category] || category}
           </Link>
@@ -185,14 +187,21 @@ export default function EditPostPage({
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen py-12" style={{ backgroundColor: '#FAF9F6' }}>
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-gray-900">Edit Post</h1>
+            <div>
+              <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
+                    style={{ backgroundColor: '#2B4F8120', color: '#2B4F81' }}>
+                수정하기
+              </span>
+              <h1 className="text-3xl font-bold" style={{ color: '#2D2926' }}>Edit Post</h1>
+            </div>
             <Link
               href={`/community/${category}/post/${id}`}
-              className="text-gray-500 hover:text-gray-900 transition-colors"
+              className="transition-colors"
+              style={{ color: '#78716c' }}
             >
               Cancel
             </Link>
@@ -200,22 +209,24 @@ export default function EditPostPage({
 
           <form
             onSubmit={handleSubmit}
-            className="bg-white rounded-2xl border border-gray-100 p-8"
+            className="bg-white rounded-2xl p-8 card-hover"
           >
             {error && error !== "Post not found" && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm">
+              <div className="mb-6 p-4 rounded-lg text-sm"
+                   style={{ backgroundColor: '#C8102E15', color: '#C8102E', border: '1px solid #C8102E30' }}>
                 {error}
               </div>
             )}
 
             {/* Thumbnail Upload */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
                 Cover Image (Optional)
               </label>
               <div className="relative">
                 {thumbnail ? (
-                  <div className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden border border-gray-200">
+                  <div className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden"
+                       style={{ border: '1px solid #e7e5e4' }}>
                     <Image
                       src={thumbnail}
                       alt="Thumbnail preview"
@@ -248,10 +259,12 @@ export default function EditPostPage({
                     type="button"
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploadingThumbnail}
-                    className="w-full max-w-md aspect-video border-2 border-dashed border-gray-300 rounded-lg flex flex-col items-center justify-center gap-2 text-gray-500 hover:border-blue-400 hover:text-blue-500 transition-colors disabled:opacity-50"
+                    className="w-full max-w-md aspect-video border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                    style={{ borderColor: '#d6d3d1', color: '#78716c' }}
                   >
                     {isUploadingThumbnail ? (
-                      <div className="inline-block animate-spin rounded-full h-6 w-6 border-2 border-gray-300 border-t-blue-600"></div>
+                      <div className="inline-block animate-spin rounded-full h-6 w-6 border-2"
+                           style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
                     ) : (
                       <>
                         <svg
@@ -285,13 +298,14 @@ export default function EditPostPage({
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
                 Category
               </label>
-              <div className="px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg text-gray-600">
+              <div className="px-4 py-3 rounded-lg"
+                   style={{ backgroundColor: '#f5f5f4', border: '1px solid #e7e5e4', color: '#57534e' }}>
                 {categoryLabels[category] || category}
               </div>
-              <p className="mt-1 text-xs text-gray-400">
+              <p className="mt-1 text-xs" style={{ color: '#a8a29e' }}>
                 Category cannot be changed
               </p>
             </div>
@@ -299,7 +313,8 @@ export default function EditPostPage({
             <div className="mb-6">
               <label
                 htmlFor="title"
-                className="block text-sm font-medium text-gray-700 mb-2"
+                className="block text-sm font-medium mb-2"
+                style={{ color: '#2D2926' }}
               >
                 Title
               </label>
@@ -309,13 +324,17 @@ export default function EditPostPage({
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 placeholder="Enter your post title"
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 rounded-lg outline-none transition-all"
+                style={{
+                  border: '1px solid #e7e5e4',
+                  backgroundColor: '#FAF9F6'
+                }}
                 maxLength={200}
               />
             </div>
 
             <div className="mb-8">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
                 Content
               </label>
               <RichTextEditor
@@ -329,14 +348,16 @@ export default function EditPostPage({
             <div className="flex items-center justify-between">
               <Link
                 href={`/community/${category}/post/${id}`}
-                className="px-6 py-3 text-gray-600 hover:text-gray-900 transition-colors"
+                className="px-6 py-3 transition-colors"
+                style={{ color: '#57534e' }}
               >
                 Cancel
               </Link>
               <button
                 type="submit"
                 disabled={isSubmitting || !title.trim()}
-                className="px-8 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-8 py-3 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
+                style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
               >
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </button>

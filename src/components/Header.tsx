@@ -10,7 +10,7 @@ export default function Header() {
   const { user, logout, isLoading } = useAuth();
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-sm border-b sticky top-0 z-50" style={{ borderColor: '#e7e5e4' }}>
       <div className="container mx-auto px-6">
         <div className="flex items-center justify-between h-26">
           {/* Logo */}
@@ -30,34 +30,39 @@ export default function Header() {
             <div className="relative group">
               <Link
                 href="/community/our-brand"
-                className="text-gray-600 hover:text-gray-900 transition-colors py-4"
+                className="py-4 transition-colors hover:text-[#C8102E]"
+                style={{ color: '#57534e' }}
               >
                 Community
               </Link>
               {/* Dropdown - shows on hover */}
               <div className="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                <div className="bg-white rounded-lg shadow-lg py-2" style={{ border: '1px solid #e7e5e4' }}>
                   <Link
                     href="/community/our-brand"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Our Brand
                   </Link>
                   <Link
                     href="/community/life-style"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Life Style
                   </Link>
                   <Link
                     href="/community/travel"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Travel
                   </Link>
                   <Link
                     href="/community/drama-movie"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Drama / Movie
                   </Link>
@@ -69,22 +74,25 @@ export default function Header() {
             <div className="relative group">
               <Link
                 href="/korean-class"
-                className="text-gray-600 hover:text-gray-900 transition-colors py-4"
+                className="py-4 transition-colors hover:text-[#C8102E]"
+                style={{ color: '#57534e' }}
               >
                 Korean Language Class
               </Link>
               {/* Dropdown - shows on hover */}
               <div className="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                <div className="bg-white rounded-lg shadow-lg py-2" style={{ border: '1px solid #e7e5e4' }}>
                   <Link
                     href="/korean-class/our-brand"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Our Brand
                   </Link>
                   <Link
                     href="/korean-class"
-                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                    className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Class
                   </Link>
@@ -93,14 +101,15 @@ export default function Header() {
             </div>
             <Link
               href="/notice"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
+              className="transition-colors hover:text-[#C8102E]"
+              style={{ color: '#57534e' }}
             >
               Notice
             </Link>
             <Link
               href="/contact"
-              className="px-5 py-2 rounded-full transition-colors"
-              style={{ backgroundColor: "#111827", color: "#ffffff" }}
+              className="px-5 py-2 rounded-full transition-all hover:scale-105"
+              style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
             >
               Contact Us
             </Link>
@@ -110,20 +119,22 @@ export default function Header() {
               <>
                 {user ? (
                   <div className="relative group">
-                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors py-4">
-                      <span className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium">
+                    <button className="flex items-center gap-2 py-4 transition-colors" style={{ color: '#57534e' }}>
+                      <span className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium text-white"
+                            style={{ backgroundColor: '#2B4F81' }}>
                         {user.name.charAt(0).toUpperCase()}
                       </span>
                     </button>
                     <div className="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                      <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2">
-                        <div className="px-4 py-2 border-b border-gray-100">
-                          <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                          <p className="text-xs text-gray-500">{user.email}</p>
+                      <div className="bg-white rounded-lg shadow-lg py-2" style={{ border: '1px solid #e7e5e4' }}>
+                        <div className="px-4 py-2 border-b" style={{ borderColor: '#e7e5e4' }}>
+                          <p className="text-sm font-medium" style={{ color: '#2D2926' }}>{user.name}</p>
+                          <p className="text-xs" style={{ color: '#78716c' }}>{user.email}</p>
                         </div>
                         <button
                           onClick={logout}
-                          className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                          className="block w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                          style={{ color: '#57534e' }}
                         >
                           Sign Out
                         </button>
@@ -133,7 +144,8 @@ export default function Header() {
                 ) : (
                   <Link
                     href="/auth/login"
-                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                    className="transition-colors hover:text-[#C8102E]"
+                    style={{ color: '#57534e' }}
                   >
                     Sign In
                   </Link>
@@ -152,6 +164,7 @@ export default function Header() {
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              style={{ color: '#2D2926' }}
             >
               {isMobileMenuOpen ? (
                 <path
@@ -174,55 +187,61 @@ export default function Header() {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-100">
+          <div className="md:hidden py-4 border-t" style={{ borderColor: '#e7e5e4' }}>
             <nav className="flex flex-col gap-2">
               <div className="py-2">
-                <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
+                <p className="text-sm uppercase tracking-wider mb-2" style={{ color: '#a8a29e' }}>
                   Community
                 </p>
                 <Link
                   href="/community/our-brand"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Our Brand
                 </Link>
                 <Link
                   href="/community/life-style"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Life Style
                 </Link>
                 <Link
                   href="/community/travel"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Travel
                 </Link>
                 <Link
                   href="/community/drama-movie"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Drama / Movie
                 </Link>
               </div>
               <div className="py-2">
-                <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
+                <p className="text-sm uppercase tracking-wider mb-2" style={{ color: '#a8a29e' }}>
                   Korean Language Class
                 </p>
                 <Link
                   href="/korean-class/our-brand"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Our Brand
                 </Link>
                 <Link
                   href="/korean-class"
-                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  className="block py-2 pl-4 hover:text-[#C8102E] transition-colors"
+                  style={{ color: '#57534e' }}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   Class
@@ -230,7 +249,8 @@ export default function Header() {
               </div>
               <Link
                 href="/notice"
-                className="py-2 text-gray-600 hover:text-gray-900"
+                className="py-2 hover:text-[#C8102E] transition-colors"
+                style={{ color: '#57534e' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Notice
@@ -238,7 +258,7 @@ export default function Header() {
               <Link
                 href="/contact"
                 className="mt-2 px-5 py-2 rounded-full transition-colors text-center"
-                style={{ backgroundColor: "#111827", color: "#ffffff" }}
+                style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 Contact Us
@@ -246,16 +266,17 @@ export default function Header() {
 
               {/* Mobile Auth */}
               {!isLoading && (
-                <div className="mt-4 pt-4 border-t border-gray-100">
+                <div className="mt-4 pt-4 border-t" style={{ borderColor: '#e7e5e4' }}>
                   {user ? (
                     <>
                       <div className="flex items-center gap-3 py-2">
-                        <span className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium">
+                        <span className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium text-white"
+                              style={{ backgroundColor: '#2B4F81' }}>
                           {user.name.charAt(0).toUpperCase()}
                         </span>
                         <div>
-                          <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                          <p className="text-xs text-gray-500">{user.email}</p>
+                          <p className="text-sm font-medium" style={{ color: '#2D2926' }}>{user.name}</p>
+                          <p className="text-xs" style={{ color: '#78716c' }}>{user.email}</p>
                         </div>
                       </div>
                       <button
@@ -263,7 +284,8 @@ export default function Header() {
                           logout();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="w-full mt-2 py-2 text-gray-600 hover:text-gray-900 text-left"
+                        className="w-full mt-2 py-2 text-left hover:text-[#C8102E] transition-colors"
+                        style={{ color: '#57534e' }}
                       >
                         Sign Out
                       </button>
@@ -271,7 +293,8 @@ export default function Header() {
                   ) : (
                     <Link
                       href="/auth/login"
-                      className="block py-2 text-gray-600 hover:text-gray-900"
+                      className="block py-2 hover:text-[#C8102E] transition-colors"
+                      style={{ color: '#57534e' }}
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
                       Sign In

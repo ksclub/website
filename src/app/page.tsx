@@ -21,7 +21,8 @@ export default function Home() {
             className="text-4xl md:text-6xl font-bold mb-6"
             style={{
               color: "#ffffff",
-              textShadow: "0 4px 20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)",
+              textShadow:
+                "0 4px 20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)",
             }}
           >
             Welcome to
@@ -245,19 +246,6 @@ export default function Home() {
           >
             View Courses
           </Link>
-        </div>
-      </section>
-
-      {/* Footer-like section with Korean cultural note */}
-      <section
-        className="py-12 border-t"
-        style={{ borderColor: "#e7e5e4", backgroundColor: "#FAF9F6" }}
-      >
-        <div className="container mx-auto px-6 text-center">
-          <p className="text-sm" style={{ color: "#78716c" }}>
-            <span style={{ color: "#C8102E" }}>●</span> 한국어와 한국 문화를
-            함께 배워요 <span style={{ color: "#2B4F81" }}>●</span>
-          </p>
         </div>
       </section>
     </div>

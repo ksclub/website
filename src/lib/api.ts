@@ -80,7 +80,7 @@ export const postApi = {
   getTopPosts: (category: string, limit = 5) =>
     fetchApi<{ posts: Post[] }>(`/posts/top?category=${category}&limit=${limit}`),
 
-  create: (token: string, data: { title: string; content: string; category: string; excerpt?: string }) =>
+  create: (token: string, data: { title: string; content: string; category: string; excerpt?: string; thumbnail?: string }) =>
     fetchApi<{ message: string; post: Post }>('/posts', {
       method: 'POST',
       body: data,
@@ -90,6 +90,19 @@ export const postApi = {
   toggleLike: (token: string, postId: string) =>
     fetchApi<{ liked: boolean }>(`/posts/${postId}/like`, {
       method: 'POST',
+      token,
+    }),
+
+  update: (token: string, postId: string, data: { title?: string; content?: string; excerpt?: string; thumbnail?: string }) =>
+    fetchApi<{ message: string; post: Post }>(`/posts/${postId}`, {
+      method: 'PUT',
+      body: data,
+      token,
+    }),
+
+  delete: (token: string, postId: string) =>
+    fetchApi<{ message: string }>(`/posts/${postId}`, {
+      method: 'DELETE',
       token,
     }),
 };
@@ -113,6 +126,30 @@ export const courseApi = {
 
   getById: (id: string) =>
     fetchApi<{ course: Course }>(`/courses/${id}`),
+};
+
+// Upload API
+export const uploadApi = {
+  uploadImage: async (token: string, file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('image', file);
+
+    const response = await fetch(`${API_URL}/upload/image`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || 'Failed to upload image');
+    }
+
+    return data.url;
+  },
 };
 
 // Types
@@ -139,6 +176,7 @@ export interface Post {
   title: string;
   content: string;
   excerpt?: string;
+  thumbnail?: string;
   category: string;
   views: number;
   createdAt: string;

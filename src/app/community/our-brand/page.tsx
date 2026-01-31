@@ -1,40 +1,35 @@
-import Link from "next/link";
+"use client";
 
-// Mock data for top posts (will be replaced with DB later)
-const topPosts = [
-  {
-    id: 1,
-    title: "Why Korean Slang Matters in Daily Conversations",
-    excerpt: "Understanding slang helps you connect with native speakers on a deeper level...",
-    author: "Admin",
-    views: 1234,
-    likes: 89,
-    comments: 23,
-    date: "2024-01-15",
-  },
-  {
-    id: 2,
-    title: "Top 10 Korean Slangs of 2024",
-    excerpt: "Here are the most popular Korean slang words that are trending right now...",
-    author: "Admin",
-    views: 987,
-    likes: 76,
-    comments: 15,
-    date: "2024-01-10",
-  },
-  {
-    id: 3,
-    title: "How to Use Korean Internet Slang",
-    excerpt: "A guide to understanding and using Korean online expressions...",
-    author: "Admin",
-    views: 856,
-    likes: 64,
-    comments: 12,
-    date: "2024-01-05",
-  },
-];
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { postApi, Post } from "@/lib/api";
 
 export default function OurBrandPage() {
+  const [topPosts, setTopPosts] = useState<Post[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchTopPosts() {
+      try {
+        const data = await postApi.getTopPosts("our-brand", 5);
+        setTopPosts(data.posts);
+      } catch (err) {
+        console.error("Failed to fetch top posts:", err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchTopPosts();
+  }, []);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  };
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -100,47 +95,57 @@ export default function OurBrandPage() {
             Top Posts
           </h2>
           <div className="max-w-4xl mx-auto space-y-4">
-            {topPosts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/community/our-brand/post/${post.id}`}
-                className="block bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md hover:border-gray-200 transition-all"
-              >
-                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                  <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
-                      {post.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm mb-3">{post.excerpt}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-400">
-                      <span>{post.author}</span>
-                      <span>{post.date}</span>
+            {isLoading ? (
+              <div className="text-center py-8">
+                <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+              </div>
+            ) : topPosts.length > 0 ? (
+              topPosts.map((post) => (
+                <Link
+                  key={post.id}
+                  href={`/community/our-brand/post/${post.id}`}
+                  className="block bg-white rounded-xl border border-gray-100 p-6 hover:shadow-md hover:border-gray-200 transition-all"
+                >
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div className="flex-1">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 hover:text-blue-600 transition-colors">
+                        {post.title}
+                      </h3>
+                      <p className="text-gray-500 text-sm mb-3">{post.excerpt || post.content.slice(0, 100)}</p>
+                      <div className="flex items-center gap-4 text-xs text-gray-400">
+                        <span>{post.author.name}</span>
+                        <span>{formatDate(post.createdAt)}</span>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <span className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        {post.views}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        {post._count.likes}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                        {post._count.comments}
+                      </span>
                     </div>
                   </div>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                      </svg>
-                      {post.views}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                      </svg>
-                      {post.likes}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                      </svg>
-                      {post.comments}
-                    </span>
-                  </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))
+            ) : (
+              <div className="text-center py-8 text-gray-500">
+                No posts yet. Be the first to share!
+              </div>
+            )}
           </div>
         </div>
       </section>

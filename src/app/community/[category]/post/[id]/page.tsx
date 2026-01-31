@@ -1,0 +1,273 @@
+"use client";
+
+import { useState, useEffect, use } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { postApi, Post } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
+
+const categoryLabels: Record<string, string> = {
+  "our-brand": "Our Brand",
+  "life-style": "Life Style",
+  "travel": "Travel",
+  "drama-movie": "Drama / Movie",
+};
+
+export default function PostDetailPage({
+  params,
+}: {
+  params: Promise<{ category: string; id: string }>;
+}) {
+  const { category, id } = use(params);
+  const router = useRouter();
+  const { user, token } = useAuth();
+  const [post, setPost] = useState<Post | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [isLiking, setIsLiking] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  const isAuthor = user && post && user.id === post.author.id;
+  const isAdmin = user && user.role === "ADMIN";
+  const canEdit = isAuthor || isAdmin;
+
+  useEffect(() => {
+    async function fetchPost() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await postApi.getById(id, token || undefined);
+        setPost(data.post);
+      } catch (err) {
+        setError("Post not found");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPost();
+  }, [id, token]);
+
+  const handleLike = async () => {
+    if (!token || !post) {
+      router.push(`/auth/login?redirect=/community/${category}/post/${id}`);
+      return;
+    }
+
+    setIsLiking(true);
+    try {
+      const result = await postApi.toggleLike(token, post.id);
+      setPost({
+        ...post,
+        isLiked: result.liked,
+        _count: {
+          ...post._count,
+          likes: post._count.likes + (result.liked ? 1 : -1),
+        },
+      });
+    } catch (err) {
+      console.error("Failed to toggle like:", err);
+    } finally {
+      setIsLiking(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!token || !post) return;
+
+    setIsDeleting(true);
+    try {
+      await postApi.delete(token, post.id);
+      router.push(`/community/${category}`);
+    } catch (err) {
+      console.error("Failed to delete post:", err);
+      alert("Failed to delete post");
+    } finally {
+      setIsDeleting(false);
+      setShowDeleteConfirm(false);
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error || !post) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Post not found</h1>
+          <Link href={`/community/${category}`} className="text-blue-600 hover:text-blue-700">
+            Back to {categoryLabels[category] || category}
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen">
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full">
+            <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Post</h3>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to delete this post? This action cannot be undone.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteConfirm(false)}
+                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-gray-600 hover:bg-gray-50 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors disabled:opacity-50"
+              >
+                {isDeleting ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Header */}
+      <section className="bg-gradient-to-b from-gray-50 to-white py-12 md:py-16">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="flex items-center justify-between mb-8">
+              <Link
+                href={`/community/${category}`}
+                className="inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back to {categoryLabels[category] || category}
+              </Link>
+
+              {/* Edit/Delete buttons */}
+              {canEdit && (
+                <div className="flex items-center gap-2">
+                  <Link
+                    href={`/community/${category}/post/${id}/edit`}
+                    className="px-4 py-2 text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+                  >
+                    Edit
+                  </Link>
+                  <button
+                    onClick={() => setShowDeleteConfirm(true)}
+                    className="px-4 py-2 text-sm text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                  >
+                    Delete
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <span className="inline-block px-3 py-1 bg-blue-100 text-blue-600 text-sm font-medium rounded-full mb-4">
+              {categoryLabels[category] || category}
+            </span>
+
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              {post.title}
+            </h1>
+
+            <div className="flex items-center gap-4 text-sm text-gray-500">
+              <span>{post.author.name}</span>
+              <span>{formatDate(post.createdAt)}</span>
+              <span className="flex items-center gap-1">
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                {post.views}
+              </span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Content */}
+      <section className="py-8 pb-16">
+        <div className="container mx-auto px-6">
+          <div className="max-w-3xl mx-auto">
+            <div className="bg-white rounded-2xl border border-gray-100 p-6 md:p-10">
+              <div
+                className="prose prose-gray max-w-none"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              />
+            </div>
+
+            {/* Actions */}
+            <div className="mt-6 flex items-center justify-between">
+              <button
+                onClick={handleLike}
+                disabled={isLiking}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
+                  post.isLiked
+                    ? "bg-red-50 text-red-600"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                }`}
+              >
+                <svg
+                  className="w-5 h-5"
+                  fill={post.isLiked ? "currentColor" : "none"}
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+                <span>{post._count.likes}</span>
+              </button>
+
+              <div className="flex items-center gap-2 text-gray-500">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                  />
+                </svg>
+                <span>{post._count.comments} comments</span>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <div className="mt-8 flex justify-center">
+              <Link
+                href={`/community/${category}`}
+                className="px-6 py-3 rounded-lg transition-colors"
+                style={{ backgroundColor: "#f3f4f6", color: "#374151" }}
+              >
+                Back to List
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+}

@@ -1,16 +1,58 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import PostCard, { Post } from "./PostCard";
+import { useRouter } from "next/navigation";
+import PostCard from "./PostCard";
+import { postApi, Post, Pagination } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 interface BoardLayoutProps {
   title: string;
   description: string;
   category: string;
-  posts: Post[];
 }
 
-export default function BoardLayout({ title, description, category, posts }: BoardLayoutProps) {
+export default function BoardLayout({ title, description, category }: BoardLayoutProps) {
+  const router = useRouter();
+  const { user, token } = useAuth();
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [pagination, setPagination] = useState<Pagination | null>(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchPosts() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await postApi.getAll(category, currentPage, 9, token || undefined);
+        setPosts(data.posts);
+        setPagination(data.pagination);
+      } catch (err) {
+        setError("Failed to load posts");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPosts();
+  }, [category, currentPage, token]);
+
+  const handleWriteClick = () => {
+    if (!user) {
+      router.push("/auth/login?redirect=/community/write?category=" + category);
+      return;
+    }
+    router.push(`/community/write?category=${category}`);
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -31,25 +73,51 @@ export default function BoardLayout({ title, description, category, posts }: Boa
           {/* Actions Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-500">Total {posts.length} posts</span>
+              <span className="text-sm text-gray-500">
+                Total {pagination?.total || 0} posts
+              </span>
             </div>
             <button
               className="px-6 py-2.5 rounded-lg transition-colors text-sm font-medium"
               style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
-              onClick={() => alert("Login required to write a post")}
+              onClick={handleWriteClick}
             >
               Write Post
             </button>
           </div>
 
+          {/* Loading State */}
+          {isLoading && (
+            <div className="text-center py-16">
+              <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+              <p className="mt-4 text-gray-500">Loading posts...</p>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && !isLoading && (
+            <div className="text-center py-16">
+              <p className="text-red-500">{error}</p>
+              <button
+                onClick={() => setCurrentPage(1)}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg"
+              >
+                Try Again
+              </button>
+            </div>
+          )}
+
           {/* Posts Grid */}
-          {posts.length > 0 ? (
+          {!isLoading && !error && posts.length > 0 && (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {posts.map((post) => (
                 <PostCard key={post.id} post={post} category={category} />
               ))}
             </div>
-          ) : (
+          )}
+
+          {/* Empty State */}
+          {!isLoading && !error && posts.length === 0 && (
             <div className="text-center py-16">
               <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,23 +130,37 @@ export default function BoardLayout({ title, description, category, posts }: Boa
           )}
 
           {/* Pagination */}
-          {posts.length > 0 && (
+          {!isLoading && pagination && pagination.totalPages > 1 && (
             <div className="flex justify-center mt-12">
               <nav className="flex items-center gap-1">
-                <button className="px-3 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-50" disabled>
+                <button
+                  className="px-3 py-2 text-gray-400 hover:text-gray-600 disabled:opacity-50"
+                  disabled={currentPage === 1}
+                  onClick={() => handlePageChange(currentPage - 1)}
+                >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                   </svg>
                 </button>
+                {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    className="px-4 py-2 rounded-lg text-sm"
+                    style={
+                      currentPage === page
+                        ? { backgroundColor: '#111827', color: '#ffffff' }
+                        : { color: '#4b5563' }
+                    }
+                    onClick={() => handlePageChange(page)}
+                  >
+                    {page}
+                  </button>
+                ))}
                 <button
-                  className="px-4 py-2 rounded-lg text-sm"
-                  style={{ backgroundColor: '#111827', color: '#ffffff' }}
+                  className="px-3 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50"
+                  disabled={currentPage === pagination.totalPages}
+                  onClick={() => handlePageChange(currentPage + 1)}
                 >
-                  1
-                </button>
-                <button className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">2</button>
-                <button className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">3</button>
-                <button className="px-3 py-2 text-gray-600 hover:text-gray-900">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>

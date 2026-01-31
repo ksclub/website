@@ -1,110 +1,53 @@
+"use client";
+
+import { useState, useEffect, use } from "react";
 import Link from "next/link";
+import { noticeApi, Notice } from "@/lib/api";
 
-// Mock notice data (will be replaced with DB later)
-const notices = [
-  {
-    id: "1",
-    title: "Welcome to Korean Slang Club!",
-    content: `We're excited to launch our new community platform!
-
-Korean Slang Club is now officially open. This is a place where you can learn about Korean culture, language, and connect with fellow Korean language enthusiasts from around the world.
-
-What you can do here:
-- Explore our community sections: Life Style, Travel, Drama/Movie
-- Learn Korean through our comprehensive courses
-- Share your experiences and connect with others
-
-We're constantly working to improve your experience. Stay tuned for more updates!
-
-Thank you for being part of our community.
-
-Best regards,
-Korean Slang Club Team`,
-    date: "2024-01-25",
-    important: true,
-  },
-  {
-    id: "2",
-    title: "New Course: Korean Slang & Expressions Now Available",
-    content: `We're thrilled to announce our newest course: Korean Slang & Expressions!
-
-This course is designed for learners at all levels who want to understand how Koreans really speak in everyday life.
-
-Course Highlights:
-- Popular Korean slang used by native speakers
-- Expressions from K-dramas and K-pop
-- Internet slang and texting abbreviations
-- Cultural context for each expression
-
-The course includes 18 lessons over 6 weeks, with video content, practice exercises, and quizzes.
-
-Enroll now and start speaking Korean like a native!`,
-    date: "2024-01-20",
-    important: true,
-  },
-  {
-    id: "3",
-    title: "Community Guidelines Update",
-    content: `We've updated our community guidelines to ensure a positive experience for all members.
-
-Key Updates:
-1. Be respectful to all community members
-2. No spam or promotional content without permission
-3. Keep discussions relevant to the topic
-4. Report any inappropriate content to moderators
-
-Please review the full guidelines in your account settings.
-
-Thank you for helping us maintain a welcoming community!`,
-    date: "2024-01-15",
-    important: false,
-  },
-  {
-    id: "4",
-    title: "Maintenance Notice: January 10th",
-    content: `Our servers will undergo scheduled maintenance on January 10th from 2:00 AM to 4:00 AM KST.
-
-During this time, the website may be temporarily unavailable.
-
-We apologize for any inconvenience and appreciate your patience.`,
-    date: "2024-01-08",
-    important: false,
-  },
-  {
-    id: "5",
-    title: "Holiday Schedule",
-    content: `Customer support will have limited availability during the Lunar New Year holiday period.
-
-Holiday Period: February 9-12, 2024
-
-During this time:
-- Response times may be longer than usual
-- Live chat will be unavailable
-- Email support will still be monitored
-
-We'll resume normal operations on February 13th.
-
-Wishing everyone a happy Lunar New Year!`,
-    date: "2024-01-05",
-    important: false,
-  },
-];
-
-export function generateStaticParams() {
-  return notices.map((notice) => ({
-    id: notice.id,
-  }));
-}
-
-export default async function NoticeDetailPage({
+export default function NoticeDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = await params;
-  const notice = notices.find((n) => n.id === id);
+  const { id } = use(params);
+  const [notice, setNotice] = useState<Notice | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!notice) {
+  useEffect(() => {
+    async function fetchNotice() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const data = await noticeApi.getById(id);
+        setNotice(data.notice);
+      } catch (err) {
+        setError("Notice not found");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchNotice();
+  }, [id]);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-gray-200 border-t-blue-600"></div>
+      </div>
+    );
+  }
+
+  if (error || !notice) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -144,7 +87,7 @@ export default async function NoticeDetailPage({
             <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               {notice.title}
             </h1>
-            <p className="text-gray-500">{notice.date}</p>
+            <p className="text-gray-500">{formatDate(notice.createdAt)}</p>
           </div>
         </div>
       </section>

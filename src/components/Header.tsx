@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 
@@ -14,11 +15,12 @@ export default function Header() {
         <div className="flex items-center justify-between h-26">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <img
-              src="/website/logo1.png"
+            <Image
+              src="/logo1.png"
               alt="Korean Slang Club"
               width={140}
               height={140}
+              priority
             />
           </Link>
 

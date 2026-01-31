@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 import { postApi, uploadApi } from "@/lib/api";
@@ -27,7 +27,7 @@ const categories = [
   { value: "drama-movie", label: "Drama / Movie" },
 ];
 
-export default function WritePage() {
+function WriteForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { user, token, isLoading: authLoading } = useAuth();
@@ -279,5 +279,18 @@ export default function WritePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function WritePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+      </div>
+    }>
+      <WriteForm />
+    </Suspense>
   );
 }

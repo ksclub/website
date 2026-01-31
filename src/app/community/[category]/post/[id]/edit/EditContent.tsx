@@ -13,21 +13,30 @@ const RichTextEditor = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="border rounded-lg p-4" style={{ borderColor: '#e7e5e4' }}>
-        <div className="animate-pulse h-[300px] rounded" style={{ backgroundColor: '#f5f5f4' }}></div>
+      <div className="border rounded-lg p-4" style={{ borderColor: "#e7e5e4" }}>
+        <div
+          className="animate-pulse h-[300px] rounded"
+          style={{ backgroundColor: "#f5f5f4" }}
+        ></div>
       </div>
     ),
-  }
+  },
 );
 
 const categoryLabels: Record<string, string> = {
   "our-brand": "Our Brand",
   "life-style": "Life Style",
-  "travel": "Travel",
+  travel: "Travel",
   "drama-movie": "Drama / Movie",
 };
 
-export default function EditContent({ category, id }: { category: string; id: string }) {
+export default function EditContent({
+  category,
+  id,
+}: {
+  category: string;
+  id: string;
+}) {
   const router = useRouter();
   const { user, token, isLoading: authLoading } = useAuth();
   const thumbnailInputRef = useRef<HTMLInputElement>(null);
@@ -64,7 +73,9 @@ export default function EditContent({ category, id }: { category: string; id: st
   // Check authorization
   useEffect(() => {
     if (!authLoading && !user) {
-      router.push(`/auth/login?redirect=/community/${category}/post/${id}/edit`);
+      router.push(
+        `/auth/login?redirect=/community/${category}/post/${id}/edit`,
+      );
     }
   }, [user, authLoading, router, category, id]);
 
@@ -86,11 +97,11 @@ export default function EditContent({ category, id }: { category: string; id: st
       }
       return uploadApi.uploadImage(token, file);
     },
-    [token]
+    [token],
   );
 
   const handleThumbnailUpload = async (
-    e: React.ChangeEvent<HTMLInputElement>
+    e: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = e.target.files?.[0];
     if (!file || !token) return;
@@ -151,24 +162,32 @@ export default function EditContent({ category, id }: { category: string; id: st
 
   if (authLoading || isLoadingPost) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
-             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#FAF9F6" }}
+      >
+        <div
+          className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+          style={{ borderColor: "#e7e5e4", borderTopColor: "#C8102E" }}
+        ></div>
       </div>
     );
   }
 
   if (error === "Post not found" || !post) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#FAF9F6" }}
+      >
         <div className="text-center">
-          <h1 className="text-2xl font-bold mb-4" style={{ color: '#2D2926' }}>
+          <h1 className="text-2xl font-bold mb-4" style={{ color: "#2D2926" }}>
             Post not found
           </h1>
           <Link
             href={`/community/${category}`}
             className="transition-colors hover:underline"
-            style={{ color: '#C8102E' }}
+            style={{ color: "#C8102E" }}
           >
             Back to {categoryLabels[category] || category}
           </Link>
@@ -182,21 +201,19 @@ export default function EditContent({ category, id }: { category: string; id: st
   }
 
   return (
-    <div className="min-h-screen py-12" style={{ backgroundColor: '#FAF9F6' }}>
+    <div className="min-h-screen py-12" style={{ backgroundColor: "#FAF9F6" }}>
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="flex items-center justify-between mb-8">
             <div>
-              <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
-                    style={{ backgroundColor: '#2B4F8120', color: '#2B4F81' }}>
+              <h1 className="text-3xl font-bold" style={{ color: "#2D2926" }}>
                 Edit Post
-              </span>
-              <h1 className="text-3xl font-bold" style={{ color: '#2D2926' }}>Edit Post</h1>
+              </h1>
             </div>
             <Link
               href={`/community/${category}/post/${id}`}
               className="transition-colors"
-              style={{ color: '#78716c' }}
+              style={{ color: "#78716c" }}
             >
               Cancel
             </Link>
@@ -207,21 +224,32 @@ export default function EditContent({ category, id }: { category: string; id: st
             className="bg-white rounded-2xl p-8 card-hover"
           >
             {error && error !== "Post not found" && (
-              <div className="mb-6 p-4 rounded-lg text-sm"
-                   style={{ backgroundColor: '#C8102E15', color: '#C8102E', border: '1px solid #C8102E30' }}>
+              <div
+                className="mb-6 p-4 rounded-lg text-sm"
+                style={{
+                  backgroundColor: "#C8102E15",
+                  color: "#C8102E",
+                  border: "1px solid #C8102E30",
+                }}
+              >
                 {error}
               </div>
             )}
 
             {/* Thumbnail Upload */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Cover Image (Optional)
               </label>
               <div className="relative">
                 {thumbnail ? (
-                  <div className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden"
-                       style={{ border: '1px solid #e7e5e4' }}>
+                  <div
+                    className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden"
+                    style={{ border: "1px solid #e7e5e4" }}
+                  >
                     <Image
                       src={thumbnail}
                       alt="Thumbnail preview"
@@ -255,11 +283,16 @@ export default function EditContent({ category, id }: { category: string; id: st
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploadingThumbnail}
                     className="w-full max-w-md aspect-video border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 transition-colors disabled:opacity-50"
-                    style={{ borderColor: '#d6d3d1', color: '#78716c' }}
+                    style={{ borderColor: "#d6d3d1", color: "#78716c" }}
                   >
                     {isUploadingThumbnail ? (
-                      <div className="inline-block animate-spin rounded-full h-6 w-6 border-2"
-                           style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+                      <div
+                        className="inline-block animate-spin rounded-full h-6 w-6 border-2"
+                        style={{
+                          borderColor: "#e7e5e4",
+                          borderTopColor: "#C8102E",
+                        }}
+                      ></div>
                     ) : (
                       <>
                         <svg
@@ -293,14 +326,23 @@ export default function EditContent({ category, id }: { category: string; id: st
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Category
               </label>
-              <div className="px-4 py-3 rounded-lg"
-                   style={{ backgroundColor: '#f5f5f4', border: '1px solid #e7e5e4', color: '#57534e' }}>
+              <div
+                className="px-4 py-3 rounded-lg"
+                style={{
+                  backgroundColor: "#f5f5f4",
+                  border: "1px solid #e7e5e4",
+                  color: "#57534e",
+                }}
+              >
                 {categoryLabels[category] || category}
               </div>
-              <p className="mt-1 text-xs" style={{ color: '#a8a29e' }}>
+              <p className="mt-1 text-xs" style={{ color: "#a8a29e" }}>
                 Category cannot be changed
               </p>
             </div>
@@ -309,7 +351,7 @@ export default function EditContent({ category, id }: { category: string; id: st
               <label
                 htmlFor="title"
                 className="block text-sm font-medium mb-2"
-                style={{ color: '#2D2926' }}
+                style={{ color: "#2D2926" }}
               >
                 Title
               </label>
@@ -321,15 +363,18 @@ export default function EditContent({ category, id }: { category: string; id: st
                 placeholder="Enter your post title"
                 className="w-full px-4 py-3 rounded-lg outline-none transition-all"
                 style={{
-                  border: '1px solid #e7e5e4',
-                  backgroundColor: '#FAF9F6'
+                  border: "1px solid #e7e5e4",
+                  backgroundColor: "#FAF9F6",
                 }}
                 maxLength={200}
               />
             </div>
 
             <div className="mb-8">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Content
               </label>
               <RichTextEditor
@@ -344,7 +389,7 @@ export default function EditContent({ category, id }: { category: string; id: st
               <Link
                 href={`/community/${category}/post/${id}`}
                 className="px-6 py-3 transition-colors"
-                style={{ color: '#57534e' }}
+                style={{ color: "#57534e" }}
               >
                 Cancel
               </Link>
@@ -352,7 +397,7 @@ export default function EditContent({ category, id }: { category: string; id: st
                 type="submit"
                 disabled={isSubmitting || !title.trim()}
                 className="px-8 py-3 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
-                style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
+                style={{ backgroundColor: "#C8102E", color: "#ffffff" }}
               >
                 {isSubmitting ? "Saving..." : "Save Changes"}
               </button>

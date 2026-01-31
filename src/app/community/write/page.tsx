@@ -13,11 +13,14 @@ const RichTextEditor = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="border rounded-lg p-4" style={{ borderColor: '#e7e5e4' }}>
-        <div className="animate-pulse h-[300px] rounded" style={{ backgroundColor: '#f5f5f4' }}></div>
+      <div className="border rounded-lg p-4" style={{ borderColor: "#e7e5e4" }}>
+        <div
+          className="animate-pulse h-[300px] rounded"
+          style={{ backgroundColor: "#f5f5f4" }}
+        ></div>
       </div>
     ),
-  }
+  },
 );
 
 const categories = [
@@ -35,7 +38,9 @@ function WriteForm() {
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState(searchParams.get("category") || "life-style");
+  const [category, setCategory] = useState(
+    searchParams.get("category") || "life-style",
+  );
   const [thumbnail, setThumbnail] = useState<string | null>(null);
   const [isUploadingThumbnail, setIsUploadingThumbnail] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -47,14 +52,19 @@ function WriteForm() {
     }
   }, [user, authLoading, router]);
 
-  const handleImageUpload = useCallback(async (file: File): Promise<string> => {
-    if (!token) {
-      throw new Error("Please login to upload images");
-    }
-    return uploadApi.uploadImage(token, file);
-  }, [token]);
+  const handleImageUpload = useCallback(
+    async (file: File): Promise<string> => {
+      if (!token) {
+        throw new Error("Please login to upload images");
+      }
+      return uploadApi.uploadImage(token, file);
+    },
+    [token],
+  );
 
-  const handleThumbnailUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThumbnailUpload = async (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = e.target.files?.[0];
     if (!file || !token) return;
 
@@ -115,9 +125,14 @@ function WriteForm() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
-             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#FAF9F6" }}
+      >
+        <div
+          className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+          style={{ borderColor: "#e7e5e4", borderTopColor: "#C8102E" }}
+        ></div>
       </div>
     );
   }
@@ -127,34 +142,46 @@ function WriteForm() {
   }
 
   return (
-    <div className="min-h-screen py-12" style={{ backgroundColor: '#FAF9F6' }}>
+    <div className="min-h-screen py-12" style={{ backgroundColor: "#FAF9F6" }}>
       <div className="container mx-auto px-6">
         <div className="max-w-4xl mx-auto">
           <div className="mb-8">
-            <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
-                  style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
-              Write Post
-            </span>
-            <h1 className="text-3xl font-bold" style={{ color: '#2D2926' }}>Write a Post</h1>
+            <h1 className="text-3xl font-bold" style={{ color: "#2D2926" }}>
+              Write a Post
+            </h1>
           </div>
 
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 card-hover">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-2xl p-8 card-hover"
+          >
             {error && (
-              <div className="mb-6 p-4 rounded-lg text-sm"
-                   style={{ backgroundColor: '#C8102E15', color: '#C8102E', border: '1px solid #C8102E30' }}>
+              <div
+                className="mb-6 p-4 rounded-lg text-sm"
+                style={{
+                  backgroundColor: "#C8102E15",
+                  color: "#C8102E",
+                  border: "1px solid #C8102E30",
+                }}
+              >
                 {error}
               </div>
             )}
 
             {/* Thumbnail Upload */}
             <div className="mb-6">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Cover Image (Optional)
               </label>
               <div className="relative">
                 {thumbnail ? (
-                  <div className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden"
-                       style={{ border: '1px solid #e7e5e4' }}>
+                  <div
+                    className="relative aspect-video w-full max-w-md rounded-lg overflow-hidden"
+                    style={{ border: "1px solid #e7e5e4" }}
+                  >
                     <Image
                       src={thumbnail}
                       alt="Thumbnail preview"
@@ -167,8 +194,18 @@ function WriteForm() {
                       onClick={() => setThumbnail(null)}
                       className="absolute top-2 right-2 p-1 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
                     >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      <svg
+                        className="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
                       </svg>
                     </button>
                   </div>
@@ -178,17 +215,34 @@ function WriteForm() {
                     onClick={() => thumbnailInputRef.current?.click()}
                     disabled={isUploadingThumbnail}
                     className="w-full max-w-md aspect-video border-2 border-dashed rounded-lg flex flex-col items-center justify-center gap-2 transition-colors disabled:opacity-50"
-                    style={{ borderColor: '#d6d3d1', color: '#78716c' }}
+                    style={{ borderColor: "#d6d3d1", color: "#78716c" }}
                   >
                     {isUploadingThumbnail ? (
-                      <div className="inline-block animate-spin rounded-full h-6 w-6 border-2"
-                           style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
+                      <div
+                        className="inline-block animate-spin rounded-full h-6 w-6 border-2"
+                        style={{
+                          borderColor: "#e7e5e4",
+                          borderTopColor: "#C8102E",
+                        }}
+                      ></div>
                     ) : (
                       <>
-                        <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                        <svg
+                          className="w-8 h-8"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1.5}
+                            d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                          />
                         </svg>
-                        <span className="text-sm">Click to upload cover image</span>
+                        <span className="text-sm">
+                          Click to upload cover image
+                        </span>
                       </>
                     )}
                   </button>
@@ -204,7 +258,11 @@ function WriteForm() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="category" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                htmlFor="category"
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Category
               </label>
               <select
@@ -213,9 +271,9 @@ function WriteForm() {
                 onChange={(e) => setCategory(e.target.value)}
                 className="w-full px-4 py-3 rounded-lg outline-none transition-all"
                 style={{
-                  border: '1px solid #e7e5e4',
-                  backgroundColor: '#FAF9F6',
-                  color: '#2D2926'
+                  border: "1px solid #e7e5e4",
+                  backgroundColor: "#FAF9F6",
+                  color: "#2D2926",
                 }}
               >
                 {categories.map((cat) => (
@@ -227,7 +285,11 @@ function WriteForm() {
             </div>
 
             <div className="mb-6">
-              <label htmlFor="title" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                htmlFor="title"
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Title
               </label>
               <input
@@ -238,15 +300,18 @@ function WriteForm() {
                 placeholder="Enter your post title"
                 className="w-full px-4 py-3 rounded-lg outline-none transition-all"
                 style={{
-                  border: '1px solid #e7e5e4',
-                  backgroundColor: '#FAF9F6'
+                  border: "1px solid #e7e5e4",
+                  backgroundColor: "#FAF9F6",
                 }}
                 maxLength={200}
               />
             </div>
 
             <div className="mb-8">
-              <label className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+              <label
+                className="block text-sm font-medium mb-2"
+                style={{ color: "#2D2926" }}
+              >
                 Content
               </label>
               <RichTextEditor
@@ -262,7 +327,7 @@ function WriteForm() {
                 type="button"
                 onClick={() => router.back()}
                 className="px-6 py-3 transition-colors"
-                style={{ color: '#57534e' }}
+                style={{ color: "#57534e" }}
               >
                 Cancel
               </button>
@@ -270,7 +335,7 @@ function WriteForm() {
                 type="submit"
                 disabled={isSubmitting || !title.trim()}
                 className="px-8 py-3 rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105"
-                style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
+                style={{ backgroundColor: "#C8102E", color: "#ffffff" }}
               >
                 {isSubmitting ? "Publishing..." : "Publish Post"}
               </button>
@@ -284,12 +349,19 @@ function WriteForm() {
 
 export default function WritePage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FAF9F6' }}>
-        <div className="inline-block animate-spin rounded-full h-8 w-8 border-4"
-             style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div
+          className="min-h-screen flex items-center justify-center"
+          style={{ backgroundColor: "#FAF9F6" }}
+        >
+          <div
+            className="inline-block animate-spin rounded-full h-8 w-8 border-4"
+            style={{ borderColor: "#e7e5e4", borderTopColor: "#C8102E" }}
+          ></div>
+        </div>
+      }
+    >
       <WriteForm />
     </Suspense>
   );

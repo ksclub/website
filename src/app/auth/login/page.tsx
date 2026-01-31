@@ -33,24 +33,34 @@ function LoginForm() {
   return (
     <div className="bg-white rounded-2xl p-8 card-hover">
       <div className="text-center mb-8">
-        <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
-              style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
-          Welcome
-        </span>
-        <h1 className="text-2xl font-bold" style={{ color: '#2D2926' }}>Welcome Back</h1>
-        <p className="mt-2" style={{ color: '#78716c' }}>Sign in to your account</p>
+        <h1 className="text-2xl font-bold" style={{ color: "#2D2926" }}>
+          Welcome Back
+        </h1>
+        <p className="mt-2" style={{ color: "#78716c" }}>
+          Sign in to your account
+        </p>
       </div>
 
       {error && (
-        <div className="mb-4 p-4 rounded-lg text-sm"
-             style={{ backgroundColor: '#C8102E15', color: '#C8102E', border: '1px solid #C8102E30' }}>
+        <div
+          className="mb-4 p-4 rounded-lg text-sm"
+          style={{
+            backgroundColor: "#C8102E15",
+            color: "#C8102E",
+            border: "1px solid #C8102E30",
+          }}
+        >
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium mb-2"
+            style={{ color: "#2D2926" }}
+          >
             Email
           </label>
           <input
@@ -61,15 +71,19 @@ function LoginForm() {
             required
             className="w-full px-4 py-3 rounded-lg outline-none transition-all"
             style={{
-              border: '1px solid #e7e5e4',
-              backgroundColor: '#FAF9F6'
+              border: "1px solid #e7e5e4",
+              backgroundColor: "#FAF9F6",
             }}
             placeholder="you@example.com"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium mb-2" style={{ color: '#2D2926' }}>
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium mb-2"
+            style={{ color: "#2D2926" }}
+          >
             Password
           </label>
           <input
@@ -80,8 +94,8 @@ function LoginForm() {
             required
             className="w-full px-4 py-3 rounded-lg outline-none transition-all"
             style={{
-              border: '1px solid #e7e5e4',
-              backgroundColor: '#FAF9F6'
+              border: "1px solid #e7e5e4",
+              backgroundColor: "#FAF9F6",
             }}
             placeholder="••••••••"
           />
@@ -98,9 +112,13 @@ function LoginForm() {
       </form>
 
       <div className="mt-6 text-center">
-        <p style={{ color: '#78716c' }}>
+        <p style={{ color: "#78716c" }}>
           Don&apos;t have an account?{" "}
-          <Link href="/auth/register" className="font-medium transition-colors hover:underline" style={{ color: '#C8102E' }}>
+          <Link
+            href="/auth/register"
+            className="font-medium transition-colors hover:underline"
+            style={{ color: "#C8102E" }}
+          >
             Sign up
           </Link>
         </p>
@@ -113,12 +131,16 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center py-12 px-4 korean-gradient korean-pattern-bg">
       <div className="max-w-md w-full">
-        <Suspense fallback={
-          <div className="bg-white rounded-2xl p-8 flex items-center justify-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-4"
-                 style={{ borderColor: '#e7e5e4', borderTopColor: '#C8102E' }}></div>
-          </div>
-        }>
+        <Suspense
+          fallback={
+            <div className="bg-white rounded-2xl p-8 flex items-center justify-center">
+              <div
+                className="animate-spin rounded-full h-8 w-8 border-4"
+                style={{ borderColor: "#e7e5e4", borderTopColor: "#C8102E" }}
+              ></div>
+            </div>
+          }
+        >
           <LoginForm />
         </Suspense>
       </div>

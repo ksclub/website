@@ -26,22 +26,9 @@ export default function Header() {
             <div className="relative group">
               <Link
                 href="/community/our-brand"
-                className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-1 py-4"
+                className="text-gray-600 hover:text-gray-900 transition-colors py-4"
               >
                 Community
-                <svg
-                  className="w-4 h-4 transition-transform group-hover:rotate-180"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
               </Link>
               {/* Dropdown - shows on hover */}
               <div className="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
@@ -74,12 +61,32 @@ export default function Header() {
               </div>
             </div>
 
-            <Link
-              href="/korean-class"
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Korean Language Class
-            </Link>
+            {/* Korean Language Class Dropdown - Hover */}
+            <div className="relative group">
+              <Link
+                href="/korean-class"
+                className="text-gray-600 hover:text-gray-900 transition-colors py-4"
+              >
+                Korean Language Class
+              </Link>
+              {/* Dropdown - shows on hover */}
+              <div className="absolute top-full left-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                  <Link
+                    href="/korean-class/our-brand"
+                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  >
+                    Our Brand
+                  </Link>
+                  <Link
+                    href="/korean-class"
+                    className="block px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                  >
+                    Class
+                  </Link>
+                </div>
+              </div>
+            </div>
             <Link
               href="/notice"
               className="text-gray-600 hover:text-gray-900 transition-colors"
@@ -162,13 +169,25 @@ export default function Header() {
                   Drama / Movie
                 </Link>
               </div>
-              <Link
-                href="/korean-class"
-                className="py-2 text-gray-600 hover:text-gray-900"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Korean Language Class
-              </Link>
+              <div className="py-2">
+                <p className="text-sm text-gray-400 uppercase tracking-wider mb-2">
+                  Korean Language Class
+                </p>
+                <Link
+                  href="/korean-class/our-brand"
+                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Our Brand
+                </Link>
+                <Link
+                  href="/korean-class"
+                  className="block py-2 text-gray-600 hover:text-gray-900 pl-4"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Class
+                </Link>
+              </div>
               <Link
                 href="/notice"
                 className="py-2 text-gray-600 hover:text-gray-900"

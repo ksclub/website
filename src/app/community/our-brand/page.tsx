@@ -61,18 +61,16 @@ export default function OurBrandPage() {
               </h2>
               <div className="space-y-4 text-gray-600">
                 <p>
-                  Korean Slang Club is a community dedicated to helping people understand and appreciate
-                  the nuances of Korean language and culture that go beyond textbooks.
+                  Korean Slang Club is a space where people from around the world can freely share information, ideas, and trends related to Korea.
                 </p>
                 <p>
-                  We believe that true language mastery comes from understanding how people actually speak
-                  in everyday life - the slang, the expressions, the cultural references that make conversations
-                  feel natural and authentic.
+                  What began as a vibrant community is now evolving into a cultural hub that connects people, brands, and stories inspired by Korea.
                 </p>
                 <p>
-                  Whether you're interested in Korean dramas, K-pop, living in Korea, or simply connecting
-                  with Korean friends, we're here to help you bridge the gap between formal learning and
-                  real-world communication.
+                  The name Korean Slang Club represents real, living aspects of Korean culture—the language, lifestyle, and creativity that shape today's Korea. Discover what's trending, what people love, and what defines modern Korean culture here.
+                </p>
+                <p>
+                  Brands seeking to collaborate or share their stories through Korean Slang Club are always welcome to reach out.
                 </p>
               </div>
 

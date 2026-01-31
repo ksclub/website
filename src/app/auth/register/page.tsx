@@ -48,7 +48,7 @@ export default function RegisterPage() {
           <div className="text-center mb-8">
             <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
                   style={{ backgroundColor: '#2B4F8120', color: '#2B4F81' }}>
-              가입하기
+              Sign Up
             </span>
             <h1 className="text-2xl font-bold" style={{ color: '#2D2926' }}>Create Account</h1>
             <p className="mt-2" style={{ color: '#78716c' }}>Join Korean Slang Club today</p>

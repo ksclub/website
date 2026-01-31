@@ -189,7 +189,7 @@ export default function EditContent({ category, id }: { category: string; id: st
             <div>
               <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
                     style={{ backgroundColor: '#2B4F8120', color: '#2B4F81' }}>
-                수정하기
+                Edit Post
               </span>
               <h1 className="text-3xl font-bold" style={{ color: '#2D2926' }}>Edit Post</h1>
             </div>

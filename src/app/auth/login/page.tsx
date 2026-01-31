@@ -35,7 +35,7 @@ function LoginForm() {
       <div className="text-center mb-8">
         <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
               style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
-          환영합니다
+          Welcome
         </span>
         <h1 className="text-2xl font-bold" style={{ color: '#2D2926' }}>Welcome Back</h1>
         <p className="mt-2" style={{ color: '#78716c' }}>Sign in to your account</p>

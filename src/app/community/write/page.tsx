@@ -133,7 +133,7 @@ function WriteForm() {
           <div className="mb-8">
             <span className="inline-block px-3 py-1 rounded-full text-sm font-medium mb-4"
                   style={{ backgroundColor: '#C8102E15', color: '#C8102E' }}>
-              글쓰기
+              Write Post
             </span>
             <h1 className="text-3xl font-bold" style={{ color: '#2D2926' }}>Write a Post</h1>
           </div>

@@ -42,7 +42,9 @@ export default function BoardLayout({ title, description, category }: BoardLayou
 
   const handleWriteClick = () => {
     if (!user) {
-      router.push("/auth/login?redirect=/community/write?category=" + category);
+      if (window.confirm("Login is required to write a post. Would you like to login?")) {
+        router.push("/auth/login?redirect=/community/write?category=" + category);
+      }
       return;
     }
     router.push(`/community/write?category=${category}`);

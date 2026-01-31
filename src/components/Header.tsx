@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { user, logout, isLoading } = useAuth();
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
@@ -100,6 +102,42 @@ export default function Header() {
             >
               Contact Us
             </Link>
+
+            {/* Auth Buttons */}
+            {!isLoading && (
+              <>
+                {user ? (
+                  <div className="relative group">
+                    <button className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors py-4">
+                      <span className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium">
+                        {user.name.charAt(0).toUpperCase()}
+                      </span>
+                    </button>
+                    <div className="absolute top-full right-0 pt-2 w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                      <div className="bg-white rounded-lg shadow-lg border border-gray-100 py-2">
+                        <div className="px-4 py-2 border-b border-gray-100">
+                          <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
+                        </div>
+                        <button
+                          onClick={logout}
+                          className="block w-full text-left px-4 py-2 text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        >
+                          Sign Out
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <Link
+                    href="/auth/login"
+                    className="text-gray-600 hover:text-gray-900 transition-colors"
+                  >
+                    Sign In
+                  </Link>
+                )}
+              </>
+            )}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -203,6 +241,42 @@ export default function Header() {
               >
                 Contact Us
               </Link>
+
+              {/* Mobile Auth */}
+              {!isLoading && (
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  {user ? (
+                    <>
+                      <div className="flex items-center gap-3 py-2">
+                        <span className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium">
+                          {user.name.charAt(0).toUpperCase()}
+                        </span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          logout();
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="w-full mt-2 py-2 text-gray-600 hover:text-gray-900 text-left"
+                      >
+                        Sign Out
+                      </button>
+                    </>
+                  ) : (
+                    <Link
+                      href="/auth/login"
+                      className="block py-2 text-gray-600 hover:text-gray-900"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      Sign In
+                    </Link>
+                  )}
+                </div>
+              )}
             </nav>
           </div>
         )}

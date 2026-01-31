@@ -2,51 +2,54 @@
 
 import Link from "next/link";
 
-// Mock course data (will be replaced with DB later)
-const courses = [
+// Open courses (currently available)
+const openCourses = [
   {
     id: 1,
-    title: "Korean for Beginners",
-    level: "Beginner",
-    description: "Start your Korean journey from zero. Learn Hangul, basic grammar, and essential vocabulary.",
-    duration: "8 weeks",
-    lessons: 24,
-    price: 199,
-    features: ["Learn Hangul (Korean alphabet)", "Basic grammar patterns", "Essential vocabulary", "Pronunciation practice"],
+    title: "Super Beginner Korean",
+    level: "Super Beginner",
+    description: "Perfect for absolute beginners! Start from zero and learn Hangul, basic pronunciation, and simple greetings.",
+    duration: "6 weeks",
+    lessons: 18,
+    price: 149,
+    features: ["Learn Hangul from scratch", "Basic pronunciation", "Simple greetings & phrases", "Korean writing practice"],
     popular: true,
   },
   {
     id: 2,
-    title: "Intermediate Korean",
-    level: "Intermediate",
-    description: "Take your Korean to the next level. Complex grammar, expanded vocabulary, and natural expressions.",
-    duration: "10 weeks",
-    lessons: 30,
-    price: 249,
-    features: ["Advanced grammar structures", "Formal & informal speech", "Reading comprehension", "Writing practice"],
-    popular: false,
-  },
-  {
-    id: 3,
-    title: "Korean Slang & Expressions",
-    level: "All Levels",
-    description: "Learn how Koreans really speak! Slang, idioms, and expressions from K-dramas and daily life.",
-    duration: "6 weeks",
-    lessons: 18,
-    price: 149,
-    features: ["Popular Korean slang", "K-drama expressions", "Internet slang", "Cultural context"],
+    title: "Beginner Korean",
+    level: "Beginner",
+    description: "Build your foundation in Korean. Learn essential grammar patterns, vocabulary, and everyday conversations.",
+    duration: "8 weeks",
+    lessons: 24,
+    price: 199,
+    features: ["Essential grammar patterns", "Daily vocabulary", "Basic conversations", "Listening practice"],
     popular: true,
   },
   {
-    id: 4,
-    title: "Business Korean",
+    id: 3,
+    title: "Advanced Korean",
     level: "Advanced",
-    description: "Master professional Korean for the workplace. Formal language, email writing, and business etiquette.",
-    duration: "8 weeks",
-    lessons: 24,
+    description: "Master complex Korean expressions. Focus on nuanced grammar, formal language, and natural fluency.",
+    duration: "10 weeks",
+    lessons: 30,
     price: 299,
-    features: ["Business vocabulary", "Formal writing", "Meeting expressions", "Korean business culture"],
+    features: ["Complex grammar structures", "Formal & informal speech", "Natural expressions", "Cultural nuances"],
     popular: false,
+  },
+];
+
+// Upcoming courses (coming soon)
+const upcomingCourses = [
+  {
+    id: 4,
+    title: "Intermediate Korean",
+    level: "Intermediate",
+    description: "Take your Korean to the next level. Bridge the gap between beginner and advanced with expanded vocabulary and grammar.",
+    duration: "10 weeks",
+    lessons: 30,
+    price: 249,
+    features: ["Intermediate grammar", "Expanded vocabulary", "Reading comprehension", "Writing practice"],
   },
 ];
 
@@ -128,18 +131,23 @@ export default function KoreanClassPage() {
         </div>
       </section>
 
-      {/* Courses Section */}
+      {/* Open Courses Section */}
       <section id="courses" className="py-16 bg-gray-50">
         <div className="container mx-auto px-6">
-          <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-4">
-            Our Courses
-          </h2>
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="inline-block px-3 py-1 bg-green-100 text-green-700 text-sm font-medium rounded-full">
+              Now Open
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
+              Available Courses
+            </h2>
+          </div>
           <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
             Choose the course that fits your level and goals. All courses include lifetime access.
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {courses.map((course) => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {openCourses.map((course) => (
               <div
                 key={course.id}
                 className={`bg-white rounded-2xl border ${
@@ -151,16 +159,12 @@ export default function KoreanClassPage() {
                     Popular
                   </span>
                 )}
-                <div className="flex items-start justify-between mb-4">
-                  <div>
-                    <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded mb-2">
-                      {course.level}
-                    </span>
-                    <h3 className="text-xl font-bold text-gray-900">{course.title}</h3>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-gray-900">${course.price}</div>
-                  </div>
+                <div className="mb-4">
+                  <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded mb-2">
+                    {course.level}
+                  </span>
+                  <h3 className="text-xl font-bold text-gray-900">{course.title}</h3>
+                  <div className="text-2xl font-bold text-gray-900 mt-2">${course.price}</div>
                 </div>
                 <p className="text-gray-500 text-sm mb-4">{course.description}</p>
                 <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
@@ -196,6 +200,75 @@ export default function KoreanClassPage() {
                   onClick={() => alert("Course purchase will be available soon!")}
                 >
                   Enroll Now
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Upcoming Courses Section */}
+      <section className="py-16">
+        <div className="container mx-auto px-6">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="inline-block px-3 py-1 bg-amber-100 text-amber-700 text-sm font-medium rounded-full">
+              Coming Soon
+            </span>
+            <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-900">
+              Upcoming Courses
+            </h2>
+          </div>
+          <p className="text-gray-600 text-center mb-12 max-w-2xl mx-auto">
+            More courses are on the way! Stay tuned for our upcoming classes.
+          </p>
+
+          <div className="max-w-xl mx-auto">
+            {upcomingCourses.map((course) => (
+              <div
+                key={course.id}
+                className="bg-white rounded-2xl border border-gray-100 p-6 relative opacity-90"
+              >
+                <span className="absolute -top-3 left-6 px-3 py-1 text-xs font-medium rounded-full" style={{ backgroundColor: '#f59e0b', color: '#ffffff' }}>
+                  Coming Soon
+                </span>
+                <div className="mb-4">
+                  <span className="inline-block px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded mb-2">
+                    {course.level}
+                  </span>
+                  <h3 className="text-xl font-bold text-gray-900">{course.title}</h3>
+                  <div className="text-2xl font-bold text-gray-900 mt-2">${course.price}</div>
+                </div>
+                <p className="text-gray-500 text-sm mb-4">{course.description}</p>
+                <div className="flex items-center gap-4 text-sm text-gray-400 mb-4">
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    {course.duration}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    {course.lessons} lessons
+                  </span>
+                </div>
+                <ul className="space-y-2 mb-6">
+                  {course.features.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-2 text-sm text-gray-600">
+                      <svg className="w-4 h-4 text-green-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  className="w-full py-3 rounded-xl font-medium transition-colors cursor-not-allowed"
+                  style={{ backgroundColor: '#e5e7eb', color: '#9ca3af' }}
+                  disabled
+                >
+                  Coming Soon
                 </button>
               </div>
             ))}

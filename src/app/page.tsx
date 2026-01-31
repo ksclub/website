@@ -21,7 +21,7 @@ export default function Home() {
             className="text-4xl md:text-6xl font-bold mb-6"
             style={{
               color: "#ffffff",
-              textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+              textShadow: "0 4px 20px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3)",
             }}
           >
             Welcome to

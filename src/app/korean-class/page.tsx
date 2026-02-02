@@ -191,16 +191,16 @@ export default function KoreanClassPage() {
                     </li>
                   ))}
                 </ul>
-                <button
-                  className="w-full py-3 rounded-xl font-medium transition-colors"
+                <Link
+                  href={`/korean-class/${course.id}`}
+                  className="block w-full py-3 rounded-xl font-medium transition-colors text-center"
                   style={course.popular
                     ? { backgroundColor: '#2563eb', color: '#ffffff' }
                     : { backgroundColor: '#f3f4f6', color: '#374151' }
                   }
-                  onClick={() => alert("Course purchase will be available soon!")}
                 >
-                  Enroll Now
-                </button>
+                  View Details
+                </Link>
               </div>
             ))}
           </div>

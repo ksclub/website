@@ -105,6 +105,9 @@ export const postApi = {
       method: 'DELETE',
       token,
     }),
+
+  getMyPosts: (token: string, page = 1, limit = 10) =>
+    fetchApi<{ posts: Post[]; pagination: Pagination }>(`/posts/my?page=${page}&limit=${limit}`, { token }),
 };
 
 // Contact API

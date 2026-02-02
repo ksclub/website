@@ -131,6 +131,13 @@ export default function Header() {
                           <p className="text-sm font-medium" style={{ color: '#2D2926' }}>{user.name}</p>
                           <p className="text-xs" style={{ color: '#78716c' }}>{user.email}</p>
                         </div>
+                        <Link
+                          href="/mypage"
+                          className="block px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
+                          style={{ color: '#57534e' }}
+                        >
+                          My Page
+                        </Link>
                         <button
                           onClick={logout}
                           className="block w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors hover:text-[#C8102E]"
@@ -279,12 +286,20 @@ export default function Header() {
                           <p className="text-xs" style={{ color: '#78716c' }}>{user.email}</p>
                         </div>
                       </div>
+                      <Link
+                        href="/mypage"
+                        className="block mt-2 py-2 hover:text-[#C8102E] transition-colors"
+                        style={{ color: '#57534e' }}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        My Page
+                      </Link>
                       <button
                         onClick={() => {
                           logout();
                           setIsMobileMenuOpen(false);
                         }}
-                        className="w-full mt-2 py-2 text-left hover:text-[#C8102E] transition-colors"
+                        className="w-full py-2 text-left hover:text-[#C8102E] transition-colors"
                         style={{ color: '#57534e' }}
                       >
                         Sign Out

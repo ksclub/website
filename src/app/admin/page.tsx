@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { useAuth } from "@/context/AuthContext";
 import { adminApi, DashboardStats } from "@/lib/api";
 import StatCard from "@/components/admin/StatCard";
@@ -169,9 +170,9 @@ export default function AdminDashboard() {
               <h2 className="text-lg font-semibold text-slate-800">Recent Enrollments</h2>
               <p className="text-sm text-slate-500">Latest student registrations</p>
             </div>
-            <button className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
+            <Link href="/admin/enrollments" className="text-sm text-indigo-600 hover:text-indigo-700 font-medium">
               View all →
-            </button>
+            </Link>
           </div>
           {stats?.recentEnrollments.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-slate-400">

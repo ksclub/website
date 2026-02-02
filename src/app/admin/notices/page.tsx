@@ -82,7 +82,9 @@ export default function AdminNoticesPage() {
       key: "createdAt",
       header: "Created",
       render: (notice: Notice) => (
-        <span className="text-sm text-gray-500">{formatDate(notice.createdAt)}</span>
+        <span className="text-sm text-gray-500">
+          {formatDate(notice.createdAt)}
+        </span>
       ),
     },
     {
@@ -116,7 +118,8 @@ export default function AdminNoticesPage() {
         </div>
         <Link
           href="/admin/notices/new"
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
+          style={{ color: "#ffffff" }}
         >
           Add New Notice
         </Link>

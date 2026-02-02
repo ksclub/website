@@ -55,7 +55,8 @@ export default function AdminCoursesPage() {
         </div>
         <Link
           href="/admin/courses/new"
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-blue-500 rounded-lg hover:bg-blue-700 transition-colors"
+          style={{ color: "#ffffff" }}
         >
           Add New Course
         </Link>
@@ -66,7 +67,8 @@ export default function AdminCoursesPage() {
           <p className="text-gray-500 mb-4">No courses yet.</p>
           <Link
             href="/admin/courses/new"
-            className="inline-block px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-block px-6 py-3 bg-blue-500 rounded-lg hover:bg-blue-700 transition-colors"
+            style={{ color: "#ffffff" }}
           >
             Create Your First Course
           </Link>

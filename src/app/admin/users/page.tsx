@@ -12,6 +12,7 @@ export default function AdminUsersPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (token) {
@@ -22,12 +23,15 @@ export default function AdminUsersPage() {
   const fetchUsers = async () => {
     if (!token) return;
     setLoading(true);
+    setError(null);
     try {
       const data = await adminApi.getUsers(token, currentPage, 20, search || undefined);
+      console.log("Users data:", data);
       setUsers(data.users);
       setPagination(data.pagination);
     } catch (error) {
       console.error("Failed to fetch users:", error);
+      setError(error instanceof Error ? error.message : "Failed to fetch users");
     } finally {
       setLoading(false);
     }
@@ -158,6 +162,13 @@ export default function AdminUsersPage() {
         <h1 className="text-2xl font-bold text-gray-900">Users</h1>
         <p className="text-gray-500">Manage registered users</p>
       </div>
+
+      {/* Error */}
+      {error && (
+        <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
+          Error: {error}
+        </div>
+      )}
 
       {/* Search */}
       <div className="mb-6">

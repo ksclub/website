@@ -83,9 +83,10 @@ export default function AdminSidebar() {
               href={item.href}
               className={`flex items-center gap-3 px-6 py-3 transition-colors ${
                 isActive
-                  ? "bg-gray-800 text-white border-l-4 border-blue-500"
-                  : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                  ? "bg-gray-700 border-l-4 border-blue-400 font-medium"
+                  : "hover:bg-gray-700"
               }`}
+              style={{ color: "#ffffff" }}
             >
               {item.icon}
               <span>{item.name}</span>
@@ -94,10 +95,10 @@ export default function AdminSidebar() {
         })}
       </nav>
 
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-800">
+      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-700">
         <Link
           href="/"
-          className="flex items-center gap-3 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-3 text-white hover:opacity-80 transition-opacity"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 17l-5-5m0 0l5-5m-5 5h12" />

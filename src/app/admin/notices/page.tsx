@@ -110,17 +110,20 @@ export default function AdminNoticesPage() {
   ];
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Notices</h1>
-          <p className="text-gray-500">Manage announcements and notices</p>
+          <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Notices</h1>
+          <p className="text-slate-500 mt-1">Manage announcements and notices</p>
         </div>
         <Link
           href="/admin/notices/new"
-          className="px-4 py-2 bg-gray-900 rounded-lg hover:bg-gray-700 transition-colors"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-indigo-600 rounded-xl hover:bg-indigo-700 transition-colors shadow-sm"
           style={{ color: "#ffffff" }}
         >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          </svg>
           Add New Notice
         </Link>
       </div>

@@ -18,39 +18,53 @@ export default function StatCard({
   change,
   color = "blue",
 }: StatCardProps) {
-  const colorClasses = {
-    blue: "bg-blue-500",
-    green: "bg-green-500",
-    yellow: "bg-yellow-500",
-    purple: "bg-purple-500",
+  const gradientClasses = {
+    blue: "from-blue-500 to-indigo-600",
+    green: "from-emerald-500 to-teal-600",
+    yellow: "from-amber-500 to-orange-600",
+    purple: "from-purple-500 to-pink-600",
+  };
+
+  const bgClasses = {
+    blue: "bg-blue-50",
+    green: "bg-emerald-50",
+    yellow: "bg-amber-50",
+    purple: "bg-purple-50",
+  };
+
+  const textClasses = {
+    blue: "text-blue-600",
+    green: "text-emerald-600",
+    yellow: "text-amber-600",
+    purple: "text-purple-600",
   };
 
   return (
-    <div className="bg-white rounded-xl p-6 shadow-sm border">
+    <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200/60 hover:shadow-md hover:border-slate-300/60 transition-all duration-300 group">
       <div className="flex items-start justify-between">
-        <div>
-          <p className="text-sm font-medium text-gray-500">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 mt-2">{value}</p>
+        <div className="flex-1">
+          <p className="text-sm font-medium text-slate-500 tracking-wide">{title}</p>
+          <p className="text-3xl font-bold text-slate-800 mt-2 tracking-tight">{value}</p>
           {change && (
-            <p
-              className={`text-sm mt-2 flex items-center gap-1 ${
-                change.positive ? "text-green-600" : "text-red-600"
+            <div
+              className={`inline-flex items-center gap-1 mt-3 text-sm font-medium px-2 py-1 rounded-full ${
+                change.positive ? "text-emerald-700 bg-emerald-50" : "text-red-700 bg-red-50"
               }`}
             >
               {change.positive ? (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 10l7-7m0 0l7 7m-7-7v18" />
                 </svg>
               ) : (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                 </svg>
               )}
               {change.value}
-            </p>
+            </div>
           )}
         </div>
-        <div className={`${colorClasses[color]} p-3 rounded-lg text-white`}>
+        <div className={`${bgClasses[color]} p-4 rounded-2xl ${textClasses[color]} group-hover:scale-110 transition-transform duration-300`}>
           {icon}
         </div>
       </div>

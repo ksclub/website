@@ -139,34 +139,34 @@ export default function AdminPostsPage() {
   ];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Posts</h1>
-        <p className="text-gray-500">Manage community posts</p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Posts</h1>
+        <p className="text-slate-500 mt-1">Manage community posts</p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total Posts</p>
-          <p className="text-2xl font-bold">{pagination?.total || 0}</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/60 hover:shadow-md transition-shadow">
+          <p className="text-sm font-medium text-slate-500">Total Posts</p>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{pagination?.total || 0}</p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total Views</p>
-          <p className="text-2xl font-bold text-blue-600">
-            {posts.reduce((sum, p) => sum + p.views, 0)}
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-200/60">
+          <p className="text-sm font-medium text-blue-700">Total Views</p>
+          <p className="text-2xl font-bold text-blue-800 mt-1">
+            {posts.reduce((sum, p) => sum + p.views, 0).toLocaleString()}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total Likes</p>
-          <p className="text-2xl font-bold text-red-600">
-            {posts.reduce((sum, p) => sum + p._count.likes, 0)}
+        <div className="bg-gradient-to-br from-rose-50 to-pink-50 rounded-2xl p-5 border border-rose-200/60">
+          <p className="text-sm font-medium text-rose-700">Total Likes</p>
+          <p className="text-2xl font-bold text-rose-800 mt-1">
+            {posts.reduce((sum, p) => sum + p._count.likes, 0).toLocaleString()}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total Comments</p>
-          <p className="text-2xl font-bold text-green-600">
-            {posts.reduce((sum, p) => sum + p._count.comments, 0)}
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 border border-emerald-200/60">
+          <p className="text-sm font-medium text-emerald-700">Total Comments</p>
+          <p className="text-2xl font-bold text-emerald-800 mt-1">
+            {posts.reduce((sum, p) => sum + p._count.comments, 0).toLocaleString()}
           </p>
         </div>
       </div>

@@ -53,9 +53,9 @@ export default function AdminLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-100 to-slate-50">
       <AdminSidebar />
-      <main className="ml-64 p-8">{children}</main>
+      <main className="ml-72 p-8">{children}</main>
     </div>
   );
 }

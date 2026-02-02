@@ -173,33 +173,33 @@ export default function AdminEnrollmentsPage() {
   ];
 
   return (
-    <div>
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900">Enrollments</h1>
-        <p className="text-gray-500">Manage course enrollments and payments</p>
+    <div className="space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold text-slate-800 tracking-tight">Enrollments</h1>
+        <p className="text-slate-500 mt-1">Manage course enrollments and payments</p>
       </div>
 
       {/* Stats Summary */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Total</p>
-          <p className="text-2xl font-bold">{pagination?.total || 0}</p>
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="bg-white rounded-2xl p-5 border border-slate-200/60 hover:shadow-md transition-shadow">
+          <p className="text-sm font-medium text-slate-500">Total</p>
+          <p className="text-2xl font-bold text-slate-800 mt-1">{pagination?.total || 0}</p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Active</p>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-5 border border-emerald-200/60">
+          <p className="text-sm font-medium text-emerald-700">Active</p>
+          <p className="text-2xl font-bold text-emerald-800 mt-1">
             {enrollments.filter((e) => e.status === "ACTIVE").length}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Pending</p>
-          <p className="text-2xl font-bold text-yellow-600">
+        <div className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-5 border border-amber-200/60">
+          <p className="text-sm font-medium text-amber-700">Pending</p>
+          <p className="text-2xl font-bold text-amber-800 mt-1">
             {enrollments.filter((e) => e.status === "PENDING").length}
           </p>
         </div>
-        <div className="bg-white rounded-lg p-4 border">
-          <p className="text-sm text-gray-500">Revenue (This Page)</p>
-          <p className="text-2xl font-bold text-blue-600">
+        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-200/60">
+          <p className="text-sm font-medium text-blue-700">Revenue (This Page)</p>
+          <p className="text-2xl font-bold text-blue-800 mt-1">
             ${enrollments
               .filter((e) => e.payment?.status === "COMPLETED")
               .reduce((sum, e) => sum + e.price, 0)

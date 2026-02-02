@@ -92,8 +92,8 @@ export default function MyPage() {
           <h2 className="text-xl font-bold text-gray-900">My Posts</h2>
           <Link
             href="/community/write"
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-colors"
-            style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
+            className="px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
+            style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
           >
             Write New Post
           </Link>
@@ -122,8 +122,8 @@ export default function MyPage() {
             <p className="text-gray-500 mb-4">You haven&apos;t written any posts yet.</p>
             <Link
               href="/community/write"
-              className="inline-block px-6 py-3 rounded-lg font-medium transition-colors"
-              style={{ backgroundColor: '#C8102E', color: '#ffffff' }}
+              className="inline-block px-6 py-3 rounded-lg font-medium transition-colors hover:opacity-90"
+              style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
             >
               Write Your First Post
             </Link>

@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, use, useEffect } from "react";
-import { notFound } from "next/navigation";
+import { useState, use, useEffect, useCallback } from "react";
+import { notFound, useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
+import { enrollmentApi, paymentApi, courseApi, Course } from "@/lib/api";
+import PayPalButton from "@/components/PayPalButton";
 
 // Course data - same as main page for consistency
 const courses = [
@@ -215,9 +218,41 @@ export default function CourseDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
+  const router = useRouter();
+  const { user, token } = useAuth();
   const [activeSection, setActiveSection] = useState<"details" | "reviews" | "qna">("details");
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [emailTime, setEmailTime] = useState<string>("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [currentEnrollmentId, setCurrentEnrollmentId] = useState<string | null>(null);
+  const [dbCourse, setDbCourse] = useState<Course | null>(null);
+  const [dbCoursesLoaded, setDbCoursesLoaded] = useState(false);
+
+  // Fetch DB courses to get real course ID
+  useEffect(() => {
+    const fetchDbCourses = async () => {
+      try {
+        const { courses: dbCourses } = await courseApi.getAll();
+        // Find matching course by title
+        const course = courses.find((c) => c.id === Number(id) || c.slug === id);
+        if (course) {
+          const matched = dbCourses.find(
+            (dc) => dc.title.toLowerCase() === course.title.toLowerCase() ||
+                    dc.level.toLowerCase() === course.level.toLowerCase()
+          );
+          if (matched) {
+            setDbCourse(matched);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch DB courses:", error);
+      } finally {
+        setDbCoursesLoaded(true);
+      }
+    };
+    fetchDbCourses();
+  }, [id]);
 
   // Scroll to section
   const scrollToSection = (sectionId: string) => {
@@ -259,7 +294,86 @@ export default function CourseDetailPage({
     notFound();
   }
 
+  const selectedPlanData = course.plans.find((p) => p.period === selectedPlan);
+
+  const handleCreatePayPalOrder = useCallback(async (): Promise<string> => {
+    if (!token || !user) {
+      router.push(`/auth/login?redirect=/korean-class/${id}`);
+      throw new Error("Please login to continue");
+    }
+
+    if (!emailTime || !selectedPlan || !selectedPlanData) {
+      throw new Error("Please fill in all required fields");
+    }
+
+    if (!dbCourse) {
+      throw new Error("Course not available for purchase. Please contact support.");
+    }
+
+    try {
+      console.log("Creating enrollment...", { courseId: dbCourse.id, period: selectedPlan, price: selectedPlanData.salePrice });
+
+      // Create enrollment first
+      const enrollmentResult = await enrollmentApi.create(token, {
+        courseId: dbCourse.id,
+        period: selectedPlan,
+        price: selectedPlanData.salePrice,
+        emailTime: emailTime,
+      });
+
+      console.log("Enrollment created:", enrollmentResult);
+      setCurrentEnrollmentId(enrollmentResult.enrollment.id);
+
+      // Create PayPal order
+      console.log("Creating PayPal order...");
+      const paymentResult = await paymentApi.createOrder(token, enrollmentResult.enrollment.id);
+      console.log("PayPal order created:", paymentResult);
+
+      return paymentResult.orderId;
+    } catch (error) {
+      console.error("Payment creation error:", error);
+      setIsProcessing(false);
+      alert(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      throw error;
+    }
+  }, [token, user, emailTime, selectedPlan, selectedPlanData, dbCourse, id, router]);
+
+  const handleApprovePayment = useCallback(async (orderId: string): Promise<void> => {
+    if (!token) {
+      throw new Error("Please login to continue");
+    }
+
+    setIsProcessing(true);
+
+    try {
+      console.log("Capturing payment...", orderId);
+      await paymentApi.captureOrder(token, orderId);
+      console.log("Payment captured successfully!");
+      setPaymentSuccess(true);
+      setIsProcessing(false);
+    } catch (error) {
+      console.error("Capture error:", error);
+      setIsProcessing(false);
+      throw error;
+    }
+  }, [token]);
+
+  const handlePaymentError = useCallback((error: Error) => {
+    console.error("Payment error:", error);
+    setIsProcessing(false);
+    alert("Payment failed. Please try again.");
+  }, []);
+
+  const handlePaymentCancel = useCallback(() => {
+    console.log("Payment cancelled by user");
+    setIsProcessing(false);
+  }, []);
+
   const handleBuyNow = () => {
+    if (!user || !token) {
+      router.push(`/auth/login?redirect=/korean-class/${id}`);
+      return;
+    }
     if (!emailTime) {
       alert("Please enter your preferred email time (KST).");
       return;
@@ -268,9 +382,7 @@ export default function CourseDetailPage({
       alert("Please select a period.");
       return;
     }
-    alert(
-      `Purchase will be available soon!\nPlan: ${selectedPlan}\nEmail Time: ${emailTime}`,
-    );
+    // PayPal button will handle the rest
   };
 
   const handleAddToCart = () => {
@@ -284,6 +396,8 @@ export default function CourseDetailPage({
     }
     alert(`Added to cart!\nPlan: ${selectedPlan}\nEmail Time: ${emailTime}`);
   };
+
+  const isFormValid = emailTime.trim() !== "" && selectedPlan !== "" && dbCourse !== null;
 
   return (
     <div className="min-h-screen bg-white">
@@ -436,32 +550,53 @@ export default function CourseDetailPage({
               </select>
             </div>
 
+            {/* Payment Success Message */}
+            {paymentSuccess && (
+              <div className="mb-4 p-4 bg-green-100 border border-green-300 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <p className="text-green-800 font-medium">Payment successful! Thank you for your purchase.</p>
+                </div>
+                <p className="text-green-700 text-sm mt-1">
+                  Check your email for course details. You can also view your enrollment in{" "}
+                  <Link href="/mypage" className="underline">My Page</Link>.
+                </p>
+              </div>
+            )}
+
             {/* Action Buttons */}
-            <div className="flex gap-3">
-              <button
-                onClick={handleBuyNow}
-                className="flex-1 py-4 rounded-lg font-medium text-white transition-colors"
-                style={{ backgroundColor: "#1f2937" }}
-              >
-                Buy now
-              </button>
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 py-4 rounded-lg font-medium border border-gray-300 text-gray-700 hover:bg-gray-50 transition-colors"
-              >
-                Add to cart
-              </button>
-              <button className="px-4 py-4 rounded-lg border border-gray-300 hover:bg-gray-50 transition-colors flex items-center gap-1">
-                <svg
-                  className="w-5 h-5 text-gray-400"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                </svg>
-                <span className="text-gray-500 text-sm">3</span>
-              </button>
-            </div>
+            {!paymentSuccess && (
+              <div className="space-y-3">
+                {/* PayPal Button */}
+                {user && token ? (
+                  <PayPalButton
+                    onCreateOrder={handleCreatePayPalOrder}
+                    onApprove={handleApprovePayment}
+                    onError={handlePaymentError}
+                    onCancel={handlePaymentCancel}
+                    disabled={!isFormValid}
+                  />
+                ) : (
+                  <button
+                    onClick={handleBuyNow}
+                    className="w-full py-4 rounded-lg font-medium text-white transition-colors"
+                    style={{ backgroundColor: "#1f2937" }}
+                  >
+                    Login to Buy
+                  </button>
+                )}
+
+                {isProcessing && (
+                  <div className="flex items-center justify-center gap-2 text-gray-600">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-gray-900"></div>
+                    <span>Processing payment...</span>
+                  </div>
+                )}
+
+                              </div>
+            )}
           </div>
         </div>
       </section>

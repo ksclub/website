@@ -5,15 +5,18 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useAuth } from "@/context/AuthContext";
-import { postApi, Post, Pagination } from "@/lib/api";
+import { postApi, enrollmentApi, Post, Pagination, Enrollment } from "@/lib/api";
 
 export default function MyPage() {
   const { user, token, isLoading } = useAuth();
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"enrollments" | "posts">("enrollments");
   const [posts, setPosts] = useState<Post[]>([]);
   const [pagination, setPagination] = useState<Pagination | null>(null);
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [loadingEnrollments, setLoadingEnrollments] = useState(true);
 
   useEffect(() => {
     if (!isLoading && !user) {
@@ -24,6 +27,7 @@ export default function MyPage() {
   useEffect(() => {
     if (token) {
       fetchMyPosts();
+      fetchMyEnrollments();
     }
   }, [token, currentPage]);
 
@@ -38,6 +42,35 @@ export default function MyPage() {
       console.error("Failed to fetch posts:", error);
     } finally {
       setLoadingPosts(false);
+    }
+  };
+
+  const fetchMyEnrollments = async () => {
+    if (!token) return;
+    setLoadingEnrollments(true);
+    try {
+      const data = await enrollmentApi.getMyEnrollments(token);
+      setEnrollments(data.enrollments);
+    } catch (error) {
+      console.error("Failed to fetch enrollments:", error);
+    } finally {
+      setLoadingEnrollments(false);
+    }
+  };
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "ACTIVE":
+        return "bg-green-100 text-green-800";
+      case "PENDING":
+        return "bg-yellow-100 text-yellow-800";
+      case "COMPLETED":
+        return "bg-blue-100 text-blue-800";
+      case "CANCELLED":
+      case "REFUNDED":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -87,17 +120,145 @@ export default function MyPage() {
 
       {/* Content Section */}
       <div className="max-w-6xl mx-auto px-6 py-8">
-        {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900">My Posts</h2>
-          <Link
-            href="/community/write"
-            className="px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
-            style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+        {/* Tabs */}
+        <div className="flex gap-4 mb-6 border-b">
+          <button
+            onClick={() => setActiveTab("enrollments")}
+            className={`pb-3 px-1 font-medium transition-colors ${
+              activeTab === "enrollments"
+                ? "text-gray-900 border-b-2 border-gray-900"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
           >
-            Write New Post
-          </Link>
+            My Courses ({enrollments.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("posts")}
+            className={`pb-3 px-1 font-medium transition-colors ${
+              activeTab === "posts"
+                ? "text-gray-900 border-b-2 border-gray-900"
+                : "text-gray-500 hover:text-gray-700"
+            }`}
+          >
+            My Posts ({pagination?.total || 0})
+          </button>
         </div>
+
+        {/* Enrollments Tab */}
+        {activeTab === "enrollments" && (
+          <div>
+            {loadingEnrollments ? (
+              <div className="flex justify-center py-12">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-gray-900"></div>
+              </div>
+            ) : enrollments.length === 0 ? (
+              <div className="bg-white rounded-xl p-12 text-center">
+                <svg
+                  className="w-16 h-16 mx-auto mb-4 text-gray-300"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+                  />
+                </svg>
+                <p className="text-gray-500 mb-4">You haven&apos;t enrolled in any courses yet.</p>
+                <Link
+                  href="/korean-class"
+                  className="inline-block px-6 py-3 rounded-lg font-medium transition-colors hover:opacity-90"
+                  style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
+                >
+                  Browse Courses
+                </Link>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {enrollments.map((enrollment) => (
+                  <div
+                    key={enrollment.id}
+                    className="bg-white rounded-xl p-6 shadow-sm border"
+                  >
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-3 mb-2">
+                          <h3 className="text-lg font-semibold text-gray-900">
+                            {enrollment.course?.title || "Course"}
+                          </h3>
+                          <span
+                            className={`px-2 py-1 text-xs font-medium rounded ${getStatusColor(
+                              enrollment.status
+                            )}`}
+                          >
+                            {enrollment.status}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-600 space-y-1">
+                          <p>
+                            <span className="font-medium">Period:</span> {enrollment.period}
+                          </p>
+                          <p>
+                            <span className="font-medium">Email Time (KST):</span>{" "}
+                            {enrollment.emailTime}
+                          </p>
+                          {enrollment.startDate && (
+                            <p>
+                              <span className="font-medium">Start Date:</span>{" "}
+                              {formatDate(enrollment.startDate)}
+                            </p>
+                          )}
+                          {enrollment.endDate && (
+                            <p>
+                              <span className="font-medium">End Date:</span>{" "}
+                              {formatDate(enrollment.endDate)}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-2xl font-bold text-gray-900">
+                          ${enrollment.price.toFixed(2)}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                          Purchased: {formatDate(enrollment.createdAt)}
+                        </p>
+                        {enrollment.payment && (
+                          <p
+                            className={`text-sm mt-1 ${
+                              enrollment.payment.status === "COMPLETED"
+                                ? "text-green-600"
+                                : "text-yellow-600"
+                            }`}
+                          >
+                            Payment: {enrollment.payment.status}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Posts Tab */}
+        {activeTab === "posts" && (
+          <div>
+            {/* Section Header */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-900">My Posts</h2>
+              <Link
+                href="/community/write"
+                className="px-4 py-2 rounded-lg text-sm font-medium transition-colors hover:opacity-90"
+                style={{ backgroundColor: "#2563eb", color: "#ffffff" }}
+              >
+                Write New Post
+              </Link>
+            </div>
 
         {/* Posts Grid */}
         {loadingPosts ? (
@@ -270,6 +431,8 @@ export default function MyPage() {
               </div>
             )}
           </>
+        )}
+          </div>
         )}
       </div>
     </div>

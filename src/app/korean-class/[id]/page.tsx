@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState, use } from "react";
+import { useState, use, useEffect } from "react";
 import { notFound } from "next/navigation";
 
 // Course data - same as main page for consistency
@@ -215,11 +215,42 @@ export default function CourseDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = use(params);
-  const [activeTab, setActiveTab] = useState<"details" | "reviews" | "qna">(
-    "details",
-  );
+  const [activeSection, setActiveSection] = useState<"details" | "reviews" | "qna">("details");
   const [selectedPlan, setSelectedPlan] = useState<string>("");
   const [emailTime, setEmailTime] = useState<string>("");
+
+  // Scroll to section
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      const offset = 160; // header + sticky tabs height
+      const elementPosition = element.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - offset;
+      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+    }
+  };
+
+  // Track active section based on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ["details", "reviews", "qna"];
+      const scrollPosition = window.scrollY + 180;
+
+      for (const section of sections) {
+        const element = document.getElementById(section);
+        if (element) {
+          const { offsetTop, offsetHeight } = element;
+          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
+            setActiveSection(section as "details" | "reviews" | "qna");
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // Find course by id or slug
   const course = courses.find((c) => c.id === Number(id) || c.slug === id);
@@ -435,48 +466,48 @@ export default function CourseDetailPage({
         </div>
       </section>
 
-      {/* Tabs Section */}
-      <section className="border-t border-gray-200 mt-8">
+      {/* Sticky Tabs Section */}
+      <section className="sticky top-[104px] z-40 bg-white/95 backdrop-blur-sm border-t border-b border-gray-200 mt-8 shadow-sm">
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
-          <div className="flex justify-center border-b border-gray-200">
+          <div className="flex justify-center">
             <button
-              onClick={() => setActiveTab("details")}
+              onClick={() => scrollToSection("details")}
               className={`px-8 py-4 text-lg font-medium transition-colors relative ${
-                activeTab === "details"
+                activeSection === "details"
                   ? "text-gray-900"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
               Details
-              {activeTab === "details" && (
+              {activeSection === "details" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
               )}
             </button>
             <span className="text-gray-300 self-center">/</span>
             <button
-              onClick={() => setActiveTab("reviews")}
+              onClick={() => scrollToSection("reviews")}
               className={`px-8 py-4 text-lg font-medium transition-colors relative ${
-                activeTab === "reviews"
+                activeSection === "reviews"
                   ? "text-gray-900"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
               Reviews ({reviews.length})
-              {activeTab === "reviews" && (
+              {activeSection === "reviews" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
               )}
             </button>
             <span className="text-gray-300 self-center">/</span>
             <button
-              onClick={() => setActiveTab("qna")}
+              onClick={() => scrollToSection("qna")}
               className={`px-8 py-4 text-lg font-medium transition-colors relative ${
-                activeTab === "qna"
+                activeSection === "qna"
                   ? "text-gray-900"
                   : "text-gray-400 hover:text-gray-600"
               }`}
             >
               Q&A (0)
-              {activeTab === "qna" && (
+              {activeSection === "qna" && (
                 <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900" />
               )}
             </button>
@@ -484,89 +515,97 @@ export default function CourseDetailPage({
         </div>
       </section>
 
-      {/* Tab Content */}
-      <section className="py-16">
+      {/* Details Section */}
+      <section id="details" className="py-16">
         <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
-          {activeTab === "details" && (
-            <div className="max-w-3xl mx-auto">
-              {course.detailImages.map((image, index) => (
-                <div key={index} className="mb-4">
-                  <Image
-                    src={image}
-                    alt={`Course detail ${index + 1}`}
-                    width={800}
-                    height={1000}
-                    className="w-full h-auto"
-                    unoptimized
-                  />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {activeTab === "reviews" && (
-            <div className="max-w-3xl mx-auto">
-              {/* Review Summary */}
-              <div className="bg-gray-50 rounded-2xl p-8 mb-8 text-center">
-                <h3 className="text-xl font-bold text-gray-700 mb-4">
-                  Learner Satisfaction
-                </h3>
-                <div className="text-5xl font-bold text-gray-900 mb-2">
-                  4.98 <span className="text-2xl text-gray-500">/5</span>
-                </div>
-                <div className="flex justify-center gap-1 text-yellow-400 text-2xl">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      className="w-6 h-6"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                    </svg>
-                  ))}
-                </div>
+          <div className="max-w-3xl mx-auto">
+            {course.detailImages.map((image, index) => (
+              <div key={index} className="mb-4">
+                <Image
+                  src={image}
+                  alt={`Course detail ${index + 1}`}
+                  width={800}
+                  height={1000}
+                  className="w-full h-auto"
+                  unoptimized
+                />
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-              {/* Reviews List */}
-              <div className="space-y-6">
-                {reviews.map((review) => (
-                  <div
-                    key={review.id}
-                    className="border-b border-gray-200 pb-6"
+      {/* Reviews Section */}
+      <section id="reviews" className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
+          <div className="max-w-3xl mx-auto">
+            {/* Review Summary */}
+            <div className="bg-white rounded-2xl p-8 mb-8 text-center shadow-sm">
+              <h3 className="text-xl font-bold text-gray-700 mb-4">
+                Learner Satisfaction
+              </h3>
+              <div className="text-5xl font-bold text-gray-900 mb-2">
+                4.98 <span className="text-2xl text-gray-500">/5</span>
+              </div>
+              <div className="flex justify-center gap-1 text-yellow-400 text-2xl">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <svg
+                    key={star}
+                    className="w-6 h-6"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="font-medium text-gray-900">
-                        {review.author}
-                      </span>
-                      <div className="flex text-orange-400">
-                        {[1, 2, 3, 4, 5].map((star) => (
-                          <svg
-                            key={star}
-                            className="w-4 h-4"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
-                          </svg>
-                        ))}
-                      </div>
-                    </div>
-                    <p className="text-gray-600">{review.content}</p>
-                  </div>
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg>
                 ))}
               </div>
             </div>
-          )}
 
-          {activeTab === "qna" && (
-            <div className="max-w-3xl mx-auto text-center py-12">
-              <p className="text-gray-500">No questions yet.</p>
-              <button className="mt-4 px-6 py-3 bg-gray-900 text-white rounded-lg font-medium hover:bg-gray-800 transition-colors">
-                Ask a Question
-              </button>
+            {/* Reviews List */}
+            <div className="space-y-6">
+              {reviews.map((review) => (
+                <div
+                  key={review.id}
+                  className="bg-white rounded-xl p-6 shadow-sm"
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="font-medium text-gray-900">
+                      {review.author}
+                    </span>
+                    <div className="flex text-orange-400">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <svg
+                          key={star}
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                      ))}
+                    </div>
+                  </div>
+                  <p className="text-gray-600">{review.content}</p>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
+        </div>
+      </section>
+
+      {/* Q&A Section */}
+      <section id="qna" className="py-16">
+        <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24">
+          <div className="max-w-3xl mx-auto text-center py-12">
+            <h3 className="text-2xl font-bold text-gray-900 mb-4">Q&A</h3>
+            <p className="text-gray-500 mb-6">No questions yet.</p>
+            <button
+              className="px-6 py-3 rounded-lg font-medium transition-colors hover:opacity-90"
+              style={{ backgroundColor: '#2563eb', color: '#ffffff' }}
+            >
+              Ask a Question
+            </button>
+          </div>
         </div>
       </section>
     </div>

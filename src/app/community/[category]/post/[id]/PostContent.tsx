@@ -486,22 +486,31 @@ export default function PostContent({ category, id }: { category: string; id: st
                 </div>
               ) : (
                 <div
-                  className="rounded-2xl p-5 mb-4 text-center"
-                  style={{ backgroundColor: '#ffffff', border: '1px solid #e7e5e4' }}
+                  className="bg-white rounded-2xl p-5 mb-4 cursor-pointer transition-all hover:border-[#C8102E]"
+                  style={{ border: '1px solid #e7e5e4' }}
+                  onClick={() => router.push(`/auth/login?redirect=/community/${category}/post/${id}`)}
                 >
-                  <svg className="w-8 h-8 mx-auto mb-2" style={{ color: '#d6d3d1' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-                  </svg>
-                  <p className="text-sm" style={{ color: '#78716c' }}>
-                    <Link
-                      href={`/auth/login?redirect=/community/${category}/post/${id}`}
-                      className="font-medium transition-colors hover:underline"
-                      style={{ color: '#C8102E' }}
+                  <div className="flex gap-3">
+                    <div
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 mt-0.5"
+                      style={{ backgroundColor: '#f5f5f4' }}
                     >
-                      Log in
-                    </Link>
-                    {" "}to join the conversation.
-                  </p>
+                      <svg className="w-4 h-4" style={{ color: '#a8a29e' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div className="flex-1 flex items-center justify-between min-w-0">
+                      <span className="text-sm" style={{ color: '#a8a29e' }}>
+                        Share your thoughts...
+                      </span>
+                      <span
+                        className="px-4 py-1.5 text-xs font-medium text-white rounded-lg shrink-0"
+                        style={{ backgroundColor: '#C8102E' }}
+                      >
+                        Log in to Comment
+                      </span>
+                    </div>
+                  </div>
                 </div>
               )}
 

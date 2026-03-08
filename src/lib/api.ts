@@ -309,6 +309,7 @@ export interface Post {
   thumbnail?: string;
   category: string;
   views: number;
+  sourceUrl?: string;
   createdAt: string;
   author: {
     id: string;

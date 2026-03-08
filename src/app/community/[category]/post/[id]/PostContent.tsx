@@ -215,6 +215,23 @@ export default function PostContent({ category, id }: { category: string; id: st
                 className="prose prose-gray max-w-none"
                 dangerouslySetInnerHTML={{ __html: post.content }}
               />
+
+              {post.sourceUrl && (
+                <div className="mt-8 pt-4 border-t" style={{ borderColor: '#e7e5e4' }}>
+                  <p className="text-sm" style={{ color: '#78716c' }}>
+                    Source:{" "}
+                    <a
+                      href={post.sourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="underline transition-colors hover:text-[#C8102E]"
+                      style={{ color: '#78716c' }}
+                    >
+                      Haps Magazine
+                    </a>
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Actions */}

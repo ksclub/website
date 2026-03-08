@@ -110,6 +110,32 @@ export const postApi = {
     fetchApi<{ posts: Post[]; pagination: Pagination }>(`/posts/my?page=${page}&limit=${limit}`, { token }),
 };
 
+// Comment API
+export const commentApi = {
+  getByPostId: (postId: string, page = 1, limit = 20) =>
+    fetchApi<{ comments: Comment[]; pagination: Pagination }>(`/posts/${postId}/comments?page=${page}&limit=${limit}`),
+
+  create: (token: string, postId: string, content: string) =>
+    fetchApi<{ message: string; comment: Comment }>(`/posts/${postId}/comments`, {
+      method: 'POST',
+      body: { content },
+      token,
+    }),
+
+  update: (token: string, postId: string, commentId: string, content: string) =>
+    fetchApi<{ message: string; comment: Comment }>(`/posts/${postId}/comments/${commentId}`, {
+      method: 'PUT',
+      body: { content },
+      token,
+    }),
+
+  delete: (token: string, postId: string, commentId: string) =>
+    fetchApi<{ message: string }>(`/posts/${postId}/comments/${commentId}`, {
+      method: 'DELETE',
+      token,
+    }),
+};
+
 // Contact API
 export const contactApi = {
   create: (data: { name: string; email: string; subject: string; message: string }, token?: string) =>
@@ -320,6 +346,19 @@ export interface Post {
     likes: number;
   };
   isLiked?: boolean;
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  postId: string;
+  authorId: string;
+  author: {
+    id: string;
+    name: string;
+  };
 }
 
 export interface Contact {
